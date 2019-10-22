@@ -132,6 +132,15 @@ $(function() {
 
     //------------------------ fix CKEDITOR ------------------------//
 
+    // ClassicEditor
+    //     .create( document.querySelector( '.ckeditor' ) )
+    //     .then( editor => {
+    //         console.log( editor );
+    //     } )
+    //     .catch( error => {
+    //         console.error( error );
+    //     } );
+
     //------------------------ Date Picker ------------------------//
     // $.fn.datepicker.defaults.format = "dd/mm/yyyy";
     $('#han_xu_ly_yc, #ngay_xu_ly_yc, #ngay_tao_yc').datepicker({

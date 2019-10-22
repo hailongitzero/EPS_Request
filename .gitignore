@@ -16,3 +16,9 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
+.idea/misc.xml
+.idea/EPS_Request.iml
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/php.xml
+.idea/modules.xml
