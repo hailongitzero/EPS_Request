@@ -208,12 +208,11 @@ class RequestController extends CommonController
     }
 
     public function requestAssignSet(Request $request){
-//        dd($request);
         $userId = Auth::user()->username;
         $ma_yeu_cau = $request->input('ma_yeu_cau');
         $nguoi_xu_ly = $request->input('nguoi_xu_ly');
         $newStatus = $request->input('trang_thai');
-        $han_xu_ly = $request->input('han_xu_ly_yc');
+        $han_xu_ly = $request->input('han_xu_ly');
         $loai_yeu_cau = $request->input('loai_yeu_cau');
         $yeu_cau_xu_ly = $request->input('yeu_cau_xu_ly');
 

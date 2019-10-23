@@ -6049,6 +6049,9 @@ Custom Css
 .important-red{
     color: red !important;
 }
+.auto-overflow{
+    overflow: auto;
+}
 @media (max-width: 991px){
     .col-sm-mb-1{
         margin-bottom: 15px;

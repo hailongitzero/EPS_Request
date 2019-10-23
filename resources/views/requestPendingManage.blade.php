@@ -106,7 +106,7 @@
                                 <div class="form-group">
                                     <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Nội Dung</b></label>
                                     <div class="col-xs-12 col-sm-9 col-md-10 controls">
-                                        <p id="noi_dung" class="content-label"></p>
+                                        <p id="noi_dung" class="content-label auto-overflow"></p>
                                         <p id="ma_yeu_cau" class="content-label hidden"></p>
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@
                                 <div class="form-group">
                                     <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Yêu Cầu</b></label>
                                     <div class="col-xs-12 col-sm-9 col-md-10 controls">
-                                        <p id="yeu_cau_xu_ly" name="yeu_cau_xu_ly" class="content-label"></p>
+                                        <p id="yeu_cau_xu_ly" name="yeu_cau_xu_ly" class="content-label auto-overflow"></p>
                                     </div>
                                 </div>
                                 <div class="form-group">

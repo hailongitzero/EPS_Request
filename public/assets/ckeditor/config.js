@@ -26,6 +26,14 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'about' }
 	];
 
+    // config.filebrowserBrowseUrl = '/ckload/';
+    // config.filebrowserImageBrowseUrl = '/ckload/';
+    config.filebrowserUploadUrl = '/ckupload';
+    config.filebrowserImageUploadUrl = '/ckupload';
+    config.extraPlugins = 'uploadimage';
+    config.imageUploadUrl = '/ckupload';
+
+
 	// Remove some buttons provided by the standard plugins, which are
 	// not needed in the Standard(s) toolbar.
 	config.removeButtons = 'Underline,Subscript,Superscript';

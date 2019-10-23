@@ -84,14 +84,14 @@
                                 <div class="form-group">
                                     <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Nội Dung</b></label>
                                     <div class="col-xs-12 col-sm-9 col-md-8 controls">
-                                        <p id="noi_dung" class="content-label">{!! $val->noi_dung !!}</p>
+                                        <p id="noi_dung" class="content-label auto-overflow">{!! $val->noi_dung !!}</p>
                                         <p id="ma_yeu_cau" class="content-label hidden">{{ $val->ma_yeu_cau }}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 col-lg-2 control-label"><b>Yêu Cầu</b></label>
                                     <div class="col-sm-9 col-lg-10 controls">
-                                        <p id="yeu_cau_xu_ly" class="content-label">{!! $val->yeu_cau_xu_ly !!}</p>
+                                        <p id="yeu_cau_xu_ly" class="content-label auto-overflow">{!! $val->yeu_cau_xu_ly !!}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">

@@ -74,3 +74,6 @@ Route::post('/get-user-info', 'HomeController@getUserInfo');
 Route::get('/mail', 'HomeController@sendTestMail');
 
 Route::get('/fileDownload/{id}', 'RequestController@fileDownload');
+
+//Route::get('/ckupload', 'FileController@ckUploadImage');
+Route::post('/ckupload', 'FileController@ckUploadImage');

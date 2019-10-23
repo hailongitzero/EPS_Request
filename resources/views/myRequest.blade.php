@@ -92,14 +92,14 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 col-lg-2 control-label"><b>Nội Dung</b></label>
                                     <div class="col-sm-9 col-lg-10 controls">
-                                        <p id="noi_dung" class="content-label"></p>
+                                        <p id="noi_dung" class="content-label auto-overflow"></p>
                                         <p id="ma_yeu_cau" class="content-label hidden"></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 col-lg-2 control-label"><b>Yêu cầu</b></label>
                                     <div class="col-sm-9 col-lg-10 controls">
-                                        <p id="yeu_cau_xu_ly" class="content-label"></p>
+                                        <p id="yeu_cau_xu_ly" class="content-label auto-overflow"></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -137,7 +137,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 col-lg-2 control-label"><b>Phản hồi</b></label>
                                     <div class="col-sm-9 col-lg-10 controls">
-                                        <p id="thong_tin_xu_ly" name="thong_tin_xu_ly" class="content-label"></p>
+                                        <p id="thong_tin_xu_ly" name="thong_tin_xu_ly" class="content-label auto-overflow"></p>
                                     </div>
                                 </div>
                             </div>

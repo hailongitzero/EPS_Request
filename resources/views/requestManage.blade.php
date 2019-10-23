@@ -104,14 +104,14 @@
                                 <div class="form-group">
                                     <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Nội Dung</b></label>
                                     <div class="col-xs-12 col-sm-9 col-md-10 controls">
-                                        <p id="noi_dung" class="content-label"></p>
+                                        <p id="noi_dung" class="content-label auto-overflow"></p>
                                         <p id="ma_yeu_cau" class="content-label hidden"></p>
                                     </div>
                                 </div>
                                 <div id="thong_tin_xu_ly_layout" class="form-group" style="display: none">
                                     <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Nội Dung xử lý</b></label>
                                     <div class="col-xs-12 col-sm-9 col-md-10 controls">
-                                        <p id="thong_tin_xu_ly" class="content-label"></p>
+                                        <p id="thong_tin_xu_ly" class="content-label auto-overflow"></p>
                                     </div>
                                 </div>
                                 <div class="form-group">

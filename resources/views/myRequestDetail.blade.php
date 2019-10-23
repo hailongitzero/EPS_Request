@@ -74,13 +74,13 @@
                                 <div class="form-group">
                                     <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Nội Dung</b></label>
                                     <div class="col-xs-12 col-sm-9 col-md-8 controls">
-                                        <p id="noi_dung" class="content-label">{!! $val->noi_dung !!}</p>
+                                        <p id="noi_dung" class="content-label auto-overflow">{!! $val->noi_dung !!}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Yêu Cầu</b></label>
                                     <div class="col-xs-12 col-sm-9 col-md-8 controls">
-                                        <p id="yeu_cau_xu_ly" class="content-label">{!! $val->yeu_cau_xu_ly !!}</p>
+                                        <p id="yeu_cau_xu_ly" class="content-label auto-overflow">{!! $val->yeu_cau_xu_ly !!}</p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -122,7 +122,7 @@
                                 <div class="form-group">
                                     <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Phản hồi</b></label>
                                     <div class="col-xs-12 col-sm-9 col-md-8 controls">
-                                        <p id="thong_tin_xu_ly" class="content-label">{!! $val->thong_tin_xu_ly !!}</p>
+                                        <p id="thong_tin_xu_ly" class="content-label auto-overflow">{!! $val->thong_tin_xu_ly !!}</p>
                                     </div>
                                 </div>
                             @endforeach

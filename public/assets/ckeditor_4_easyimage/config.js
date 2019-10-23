@@ -26,14 +26,12 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'about' }
 	];
 
-    // filebrowserBrowseUrl: '/browser/browse.php',
-	// filebrowserImageBrowseUrl: '/browser/browse.php?type=Images',
-	// filebrowserUploadUrl: '/uploader/upload.php',
-	// filebrowserImageUploadUrl: '/uploader/upload.php?type=Images'
-	config.filebrowserBrowseUrl = '';
-	config.filebrowserImageBrowseUrl = '';
-    config.filebrowserUploadUrl = '';
-    config.filebrowserImageUploadUrl = '';
+	config.filebrowserBrowseUrl = '/ckload/';
+	config.filebrowserImageBrowseUrl = '/ckload/';
+    config.filebrowserUploadUrl = '/ckupload/';
+    config.filebrowserImageUploadUrl = '/ckupload/';
+    config.extraPlugins = 'uploadimage';
+    config.imageUploadUrl = '/ckupload';
 
 	// Remove some buttons provided by the standard plugins, which are
 	// not needed in the Standard(s) toolbar.

@@ -121,7 +121,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 col-md-3 col-lg-2  control-label">Nội Dung</label>
                         <div class="col-sm-8 col-md-9 col-lg-8 controls">
-                            <textarea id="noi_dung" name="noi_dung" class="form-control col-md-12 ckeditor" rows="6"></textarea>
+                            <textarea id="noi_dung" name="noi_dung" class="form-control col-md-12 ckeditor" rows="4"></textarea>
                         </div>
                     </div>
                     <div class="form-group">

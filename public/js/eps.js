@@ -904,8 +904,15 @@ $(function() {
         $('#do_uu_tien').text("");
         $('#tieu_de').text("");
         $('#noi_dung').html("");
-        $('#yeu_cau_xu_ly').html("");
-        $('#nguoi_xu_ly').text("")
+        $('#loai_yeu_cau p').text("");
+        $('#ngay_tao_yc').datepicker('update', '');
+        $('#han_xu_ly_yc').datepicker('update', '');
+        $('#yeu_cau_xu_ly').text("");
+        $('#ngay_xu_ly').text("");
+        $('#ngay_xu_ly_yc').datepicker('update', '');
+        $('#nguoi_xu_ly p').text("");
+        $('#trang_thai option').removeAttr('selected');
+        $('.attach-file').empty();
         //end clear content
     });
 
@@ -1394,4 +1401,18 @@ $(function() {
             }
         });
     }
+
+    //fix conflict ckeditor and bootstrap modal
+    $.fn.modal.Constructor.prototype.enforceFocus = function () {
+        var $modalElement = this.$element;
+        $(document).on('focusin.modal', function (e) {
+            var $parent = $(e.target.parentNode);
+            if ($modalElement[0] !== e.target && !$modalElement.has(e.target).length
+                // add whatever conditions you need here:
+                &&
+                !$parent.hasClass('cke_dialog_ui_input_select') && !$parent.hasClass('cke_dialog_ui_input_text')) {
+                $modalElement.focus()
+            }
+        })
+    };
 });
