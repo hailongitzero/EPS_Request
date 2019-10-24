@@ -77,3 +77,5 @@ Route::get('/fileDownload/{id}', 'RequestController@fileDownload');
 
 //Route::get('/ckupload', 'FileController@ckUploadImage');
 Route::post('/ckupload', 'FileController@ckUploadImage');
+
+Route::get('/file-upload', 'FileController@fileManualManage');

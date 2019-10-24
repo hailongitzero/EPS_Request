@@ -315,6 +315,8 @@
     <script type="text/javascript" src="../assets/chosen-bootstrap/chosen.jquery.min.js"></script>
     <script type="text/javascript" src="../assets/datepicker/bootstrap-datepicker.js"></script>
     <script type="text/javascript" src="../assets/bootstrap-switch/static/js/bootstrap-switch.js"></script>
+    <script type="text/javascript" src="../js/ckfinder/ckfinder.js"></script>
+    <script>CKFinder.config( { connectorPath: '/ckfinder/connector' } );</script>
 
     <!--flaty scripts-->
     <script src="../js/eps.js"></script>

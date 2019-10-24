@@ -294,7 +294,7 @@ class RequestController extends CommonController
                     }else{
                         //mail to requester
                         $reqUser = User::where('username', $updateReq->user_yeu_cau)->get();
-                        Notification::send($reqUser, new requestAssignInform($data));
+                        Notification::send($reqUser, new requestComplete($data));
                     }
 
                     return response(['info' => 'success', 'Content' => 'Cập nhật thành công.'], 200)->header('Content-Type', 'application/json');
