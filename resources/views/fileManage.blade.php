@@ -15,10 +15,19 @@
 
 @section('breadcrumb')
     <ul class="breadcrumb">
-        <li class="active"><i class="fa fa-home"></i> Trang Chủ</li>
+        <li class="active"><i class="fa fa-home"></i> Hướng dẫn sử dụng</li>
+        <li class="active"><i class="fa fa-home"></i> Hướng dẫn sử dụng</li>
     </ul>
 @endsection
 
 @section('content')
     @include('ckfinder::setup')
+    <div id="ckfinder-widget">
+    </div>
+    <script>
+        CKFinder.widget( 'ckfinder-widget', {
+            width: '100%',
+            height: 700
+        } );
+    </script>
 @endsection

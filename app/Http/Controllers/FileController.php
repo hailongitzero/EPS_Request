@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\MdRequestManage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
@@ -63,7 +64,7 @@ class FileController extends CommonController
 
         $contentData = array(
             'masterData' => array(
-                'activeMenu' => 1,
+                'activeMenu' => 9,
                 'totalNewRequest' => $totalNewRequest,
                 'totalAssignRequest' => $totalAssignRequest,
                 'pendingRequest' =>$pendingRequest,

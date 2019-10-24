@@ -229,6 +229,12 @@
                         <!-- END Submenu -->
                     </li>
                 @endif
+                <li class="{{ $masterData['activeMenu'] == 9 ? "active" : "" }}">
+                    <a href="{{url('manual-document')}}">
+                        <i class="fa fa-file"></i>
+                        <span>Hướng dẫn sử dụng</span>
+                    </a>
+                </li>
             </ul>
             <!-- END Navlist -->
 
@@ -315,8 +321,6 @@
     <script type="text/javascript" src="../assets/chosen-bootstrap/chosen.jquery.min.js"></script>
     <script type="text/javascript" src="../assets/datepicker/bootstrap-datepicker.js"></script>
     <script type="text/javascript" src="../assets/bootstrap-switch/static/js/bootstrap-switch.js"></script>
-    <script type="text/javascript" src="../js/ckfinder/ckfinder.js"></script>
-    <script>CKFinder.config( { connectorPath: '/ckfinder/connector' } );</script>
 
     <!--flaty scripts-->
     <script src="../js/eps.js"></script>
