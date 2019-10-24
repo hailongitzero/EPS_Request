@@ -16,7 +16,6 @@
 @section('breadcrumb')
     <ul class="breadcrumb">
         <li class="active"><i class="fa fa-home"></i> Hướng dẫn sử dụng</li>
-        <li class="active"><i class="fa fa-home"></i> Hướng dẫn sử dụng</li>
     </ul>
 @endsection
 
