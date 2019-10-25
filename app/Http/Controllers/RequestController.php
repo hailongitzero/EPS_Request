@@ -281,6 +281,7 @@ class RequestController extends CommonController
                         'yeu_cau_xu_ly' => $yeuCau->yeu_cau_xu_ly,
                         'thong_tin_xu_ly' => $yeuCau->thong_tin_xu_ly,
                         'trang_thai' => ($yeuCau->trang_thai == self::MAIL_YC_MOI ? "Yêu cầu mới" : ($yeuCau->trang_thai == self::TIEP_NHAN ? "Tiếp nhận" : ($yeuCau->trang_thai == self::DANG_XU_LY ? "Đang xử lý" : ($yeuCau->trang_thai == self::HOAN_THANH ? "Hoàn thành" : "Từ chối")))),
+                        'ma_trang_thai' => $yeuCau->trang_thai,
                     );
                     if ($newStatus == self::YEU_CAU_MOI || $newStatus == self::TIEP_NHAN || $newStatus == self::DANG_XU_LY){
                         //mail to assign person
@@ -470,6 +471,7 @@ class RequestController extends CommonController
                         'phong_ban'     => $yeuCau->phong_ban['ten_phong_ban'],
                         'thong_tin_xu_ly' => $yeuCau->thong_tin_xu_ly,
                         'trang_thai' => ($yeuCau->trang_thai == self::HOAN_THANH ? 'Hoàn thành' : ($yeuCau->trang_thai == self::TU_CHOI ? "Từ chối" : "")),
+                        'ma_trang_thai' => $newStatus == self::YEU_CAU_MOI ? '5' : $newStatus,
                     );
                     if ( $newStatus == self::HOAN_THANH || $newStatus == self::TU_CHOI) {
                         Notification::send($reqUser, new requestComplete($data));

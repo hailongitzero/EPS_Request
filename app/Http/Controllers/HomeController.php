@@ -241,6 +241,7 @@ class HomeController extends CommonController
                     'phong_ban'     => $newReq['phong_ban']->ten_phong_ban,
                     'tieu_de'         => $tieu_de,
                     'noi_dung'       => $noi_dung,
+                    'ma_trang_thai' => self::YEU_CAU_MOI
                 );
 
                 $managerUser = User::where('role', self::QUAN_LY)->get();

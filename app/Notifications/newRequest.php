@@ -51,7 +51,8 @@ class newRequest extends Notification implements ShouldQueue
             ->line(Lang::getFromJson('Bạn có một yêu cầu mới từ '.$this->data['nguoi_gui'].' - ' . $this->data['phong_ban']))
             ->line(Lang::getFromJson('Tiêu đề: ').$this->data['tieu_de'])
             ->action(Lang::getFromJson('Chi tiết'), url(config('app.url').'/request-assign/'.$this->data['ma_yeu_cau']))
-            ->line(Lang::getFromJson('Đây là mail hệ thống. Vui lòng không trả lời email này.'));
+            ->line(Lang::getFromJson('Đây là mail hệ thống. Vui lòng không trả lời email này.'))
+            ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai']]);
     }
 
     /**

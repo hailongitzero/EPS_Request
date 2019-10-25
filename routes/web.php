@@ -79,3 +79,16 @@ Route::get('/fileDownload/{id}', 'RequestController@fileDownload');
 Route::post('/ckupload', 'FileController@ckUploadImage');
 
 Route::get('/manual-document', 'FileController@fileManualManage');
+
+//Route::get('mail', function () {
+//    $data = array(
+//        'nguoi_gui' =>'Hải Long',
+//        'phong_ban' => 'Quản lý',
+//        'tieu_de' => 'tieu de yeu cau',
+//        'ma_yeu_cau' => 'R000001',
+//        'trang_thai' => 0
+//    );
+//
+//    return (new App\Notifications\newRequest($data))
+//        ->toMail('chuhailong89@gmail.com');
+//});

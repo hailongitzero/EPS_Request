@@ -49,7 +49,8 @@ class requestAssignInform extends Notification implements ShouldQueue
             ->line(Lang::getFromJson('Yêu cầu của bạn đã được tiếp nhận và xử lý bởi '.$this->data['nguoi_xu_ly'].'.'))
             ->line(Lang::getFromJson('Tiêu đề: ').$this->data['tieu_de'])
             ->action(Lang::getFromJson('Chi tiết'), url(config('app.url').'/request-detail/'.$this->data['ma_yeu_cau']))
-            ->line(Lang::getFromJson('Đây là mail hệ thống. Vui lòng không trả lời email này.'));
+            ->line(Lang::getFromJson('Đây là mail hệ thống. Vui lòng không trả lời email này.'))
+            ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai']]);
     }
 
     /**
