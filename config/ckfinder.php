@@ -78,6 +78,15 @@ $config['backends']['laravel_logs'] = array(
 
 // Backends
 
+//$config['backends']['default'] = array(
+//    'name'         => 'default',
+//    'adapter'      => 'local',
+//    'baseUrl'      => env('APP_URL').'/userfiles/',
+//    'root'         => public_path('/userfiles/'),
+//    'chmodFiles'   => 0777,
+//    'chmodFolders' => 0755,
+//    'filesystemEncoding' => 'UTF-8'
+//);
 $config['backends']['default'] = array(
     'name'         => 'default',
     'adapter'      => 'local',
@@ -115,27 +124,46 @@ $config['resourceTypes'][] = array(
 // http://docs.cksource.com/ckfinder3-php/configuration.html#configuration_options_roleSessionVar
 
 $config['roleSessionVar'] = 'CKFinder_UserRole';
+session_start();
 
 // http://docs.cksource.com/ckfinder3-php/configuration.html#configuration_options_accessControl
-$config['accessControl'][] = array(
-    'role'                => '*',
-    'resourceType'        => '*',
-    'folder'              => '/',
+$config['accessControl'][] = Array(
+    'role' => '*',
+    'resourceType' => '*',
+    'folder' => '/',
 
-    'FOLDER_VIEW'         => true,
-    'FOLDER_CREATE'       => true,
-    'FOLDER_RENAME'       => true,
-    'FOLDER_DELETE'       => true,
+    'FOLDER_VIEW'        => true,
+    'FOLDER_CREATE'      => false,
+    'FOLDER_RENAME'      => false,
+    'FOLDER_DELETE'      => false,
 
-    'FILE_VIEW'           => true,
-    'FILE_UPLOAD'         => true,
-    'FILE_RENAME'         => true,
-    'FILE_DELETE'         => true,
+    'FILE_VIEW'          => true,
+    'FILE_CREATE'        => false,
+    'FILE_RENAME'        => false,
+    'FILE_DELETE'        => false,
+
+    'IMAGE_RESIZE'        => false,
+    'IMAGE_RESIZE_CUSTOM' => false
+);
+
+$config['accessControl'][] = Array(
+    'role' => 'administrator',
+    'resourceType' => '*',
+    'folder' => '/',
+
+    'FOLDER_VIEW'        => true,
+    'FOLDER_CREATE'      => true,
+    'FOLDER_RENAME'      => true,
+    'FOLDER_DELETE'      => true,
+
+    'FILE_VIEW'          => true,
+    'FILE_CREATE'        => true,
+    'FILE_RENAME'        => true,
+    'FILE_DELETE'        => true,
 
     'IMAGE_RESIZE'        => true,
     'IMAGE_RESIZE_CUSTOM' => true
 );
-
 
 /*================================ Other Settings =====================================*/
 // http://docs.cksource.com/ckfinder3-php/configuration.html

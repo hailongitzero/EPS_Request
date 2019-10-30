@@ -45,12 +45,14 @@ class requestAssignInform extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->subject(Lang::getFromJson('Thông báo yêu cầu đã tiếp nhận.'))
-            ->greeting('Xin chào!')
-            ->line(Lang::getFromJson('Yêu cầu của bạn đã được tiếp nhận và xử lý bởi '.$this->data['nguoi_xu_ly'].'.'))
-            ->line(Lang::getFromJson('Tiêu đề: ').$this->data['tieu_de'])
             ->action(Lang::getFromJson('Chi tiết'), url(config('app.url').'/request-detail/'.$this->data['ma_yeu_cau']))
-            ->line(Lang::getFromJson('Đây là mail hệ thống. Vui lòng không trả lời email này.'))
-            ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai']]);
+            ->line(Lang::getFromJson('Người xử lý: '))
+            ->line(Lang::getFromJson($this->data['nguoi_xu_ly']))
+            ->line(Lang::getFromJson('Phòng ban: '))
+            ->line(Lang::getFromJson($this->data['nguoi_xu_ly_pb']))
+            ->line(Lang::getFromJson('Ngày gửi: '))
+            ->line(Lang::getFromJson($this->data['ngay_tao']))
+            ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai'], 'trang_thai'=>$this->data['trang_thai'], 'tieu_de' => $this->data['tieu_de']]);
     }
 
     /**

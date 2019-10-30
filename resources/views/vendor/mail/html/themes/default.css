@@ -228,7 +228,13 @@ img {
     border-bottom: 10px solid #3490dc;
     border-left: 18px solid #3490dc;
 }
-
+.button-blue {
+    background-color: #00204d;
+    border-top: 10px solid #00204d;
+    border-right: 18px solid #00204d;
+    border-bottom: 10px solid #00204d;
+    border-left: 18px solid #00204d;
+}
 .button-green,
 .button-success {
     background-color: #38c172;

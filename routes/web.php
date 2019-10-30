@@ -13,9 +13,10 @@
 
 Auth::routes();
 
-Route::get('/logout', function (){
-    return redirect('login')->with(Auth::logout());
-});
+Route::get('/logout', 'Auth\LoginController@logout');
+//Route::get('/logout', function (){
+//    return redirect('login')->with(Auth::logout());
+//});
 Route::get('/', ['as' => 'index', 'uses' => 'HomeController@index']);
 
 Route::get('/request', ['as' => 'request', 'uses' => 'HomeController@Request']);
@@ -80,15 +81,17 @@ Route::post('/ckupload', 'FileController@ckUploadImage');
 
 Route::get('/manual-document', 'FileController@fileManualManage');
 
-//Route::get('mail', function () {
-//    $data = array(
-//        'nguoi_gui' =>'Hải Long',
-//        'phong_ban' => 'Quản lý',
-//        'tieu_de' => 'tieu de yeu cau',
-//        'ma_yeu_cau' => 'R000001',
-//        'trang_thai' => 0
-//    );
-//
-//    return (new App\Notifications\newRequest($data))
-//        ->toMail('chuhailong89@gmail.com');
-//});
+Route::get('mail', function () {
+    $data = array(
+        'nguoi_gui' =>'Hải Long',
+        'phong_ban' => 'Quản lý',
+        'tieu_de' => 'tieu de yeu cau',
+        'ma_yeu_cau' => 'R000001',
+        'ngay_tao' => '19/10/2019',
+        'trang_thai' => 'yêu cầu mới',
+        'ma_trang_thai' => 0,
+    );
+
+    return (new App\Notifications\newRequest($data))
+        ->toMail('chuhailong89@gmail.com');
+});

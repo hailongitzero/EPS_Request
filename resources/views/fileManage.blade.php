@@ -21,12 +21,6 @@
 
 @section('content')
     @include('ckfinder::setup')
-    <div id="ckfinder-widget">
+    <div id="ckfinder-widget-manual">
     </div>
-    <script>
-        CKFinder.widget( 'ckfinder-widget', {
-            width: '100%',
-            height: 700
-        } );
-    </script>
 @endsection

@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Lang;
 
 class requestRejectHandle extends Notification implements ShouldQueue
 {
@@ -44,13 +45,18 @@ class requestRejectHandle extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->subject(Lang::getFromJson('Thông báo chuyển xử lý yêu cầu.'))
-            ->greeting('Xin chào!')
-            ->line(Lang::getFromJson('Có một yêu cầu đã được yêu cầu chuyển xử lý.'))
-            ->line(Lang::getFromJson('Người gửi: '.$this->data['nguoi_gui'].' - ' . $this->data['phong_ban']))
-            ->line(Lang::getFromJson('Tiêu đề: ').$this->data['tieu_de'])
             ->action(Lang::getFromJson('Chi tiết'), url(config('app.url').'/request-update/'.$this->data['ma_yeu_cau']))
-            ->line(Lang::getFromJson('Đây là mail hệ thống. Vui lòng không trả lời email này.'))
-            ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai']]);
+            ->line(Lang::getFromJson('Người tạo: '))
+            ->line(Lang::getFromJson($this->data['nguoi_gui']))
+            ->line(Lang::getFromJson('Phòng ban: '))
+            ->line(Lang::getFromJson($this->data['phong_ban']))
+            ->line(Lang::getFromJson('Người chuyển xử lý: '))
+            ->line(Lang::getFromJson($this->data['nguoi_xu_ly']))
+            ->line(Lang::getFromJson('Ngày gửi: '))
+            ->line(Lang::getFromJson($this->data['ngay_tao']))
+            ->line(Lang::getFromJson('Ngày chuyển xử lý: '))
+            ->line(date('d/m/Y h:i:s'))
+            ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai'], 'trang_thai'=>$this->data['trang_thai'], 'tieu_de' => $this->data['tieu_de']]);
     }
 
     /**

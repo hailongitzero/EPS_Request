@@ -46,13 +46,15 @@ class newRequest extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(Lang::getFromJson('Thông báo nhận yêu cầu mới.'))
-            ->greeting('Xin chào!')
-            ->line(Lang::getFromJson('Bạn có một yêu cầu mới từ '.$this->data['nguoi_gui'].' - ' . $this->data['phong_ban']))
-            ->line(Lang::getFromJson('Tiêu đề: ').$this->data['tieu_de'])
+            ->subject(Lang::getFromJson('Thông báo tiếp nhận yêu cầu mới.'))
             ->action(Lang::getFromJson('Chi tiết'), url(config('app.url').'/request-assign/'.$this->data['ma_yeu_cau']))
-            ->line(Lang::getFromJson('Đây là mail hệ thống. Vui lòng không trả lời email này.'))
-            ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai']]);
+            ->line(Lang::getFromJson('Họ tên: '))
+            ->line(Lang::getFromJson($this->data['nguoi_gui']))
+            ->line(Lang::getFromJson('Phòng ban: '))
+            ->line(Lang::getFromJson($this->data['phong_ban']))
+            ->line(Lang::getFromJson('Ngày gửi: '))
+            ->line(Lang::getFromJson($this->data['ngay_tao']))
+            ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai'], 'trang_thai'=> 'Yêu cầu mới', 'tieu_de' => $this->data['tieu_de']]);
     }
 
     /**

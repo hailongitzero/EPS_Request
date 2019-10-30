@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'EPS-Quản lý yêu cầu'),
+    'name' => env('APP_NAME', 'EPS-Cổng tiếp nhận sửa chữa CNTT'),
 
     /*
     |--------------------------------------------------------------------------

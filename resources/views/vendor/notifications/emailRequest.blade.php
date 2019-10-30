@@ -1,14 +1,4 @@
 @component('mail::message')
-{{-- Greeting --}}
-@if (! empty($greeting))
-# {{ $greeting }}
-@else
-@if ($level === 'error')
-# @lang('Whoops!')
-@else
-# @lang('Hello!')
-@endif
-@endif
 
 {{-- Intro Lines --}}
 @foreach ($introLines as $line)
@@ -16,8 +6,9 @@
 
 @endforeach
 
-@component('mail::status', ['ma_trang_thai' => $ma_trang_thai])
+@component('mail::status', ['ma_trang_thai' => $ma_trang_thai, 'trang_thai'=>$trang_thai, 'tieu_de' => $tieu_de])
 @endcomponent
+
 
 {{-- Action Button --}}
 @isset($actionText)
@@ -31,35 +22,42 @@
             $color = 'primary';
     }
 ?>
-@component('mail::button', ['url' => $actionUrl, 'color' => $color])
+@component('mail::buttonCustom', ['url' => $actionUrl, 'color' => $color])
 {{ $actionText }}
 @endcomponent
 @endisset
 
 {{-- Outro Lines --}}
-@foreach ($outroLines as $line)
-    {!! $line !!}
-
-@endforeach
-
-{{-- Salutation --}}
-@if (! empty($salutation))
-{{ $salutation }}
-@else
-@lang('Cảm ơn'),<br>{{ config('app.name') }}
-@endif
-
-{{-- Subcopy --}}
-@isset($actionText)
-@slot('subcopy')
-@lang(
-    "Nếu bạn gặp vấn đề khi nhấn vào nút  \":actionText\" , vui lòng sao chép đường dẫn bên dưới\n".
-    'và dán vào thanh địa chỉ của trình duyệt: [:actionURL](:actionURL)',
-    [
-        'actionText' => $actionText,
-        'actionURL' => $actionUrl,
-    ]
-)
-@endslot
+@isset($outroLines)
+<table class="action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+    <tr>
+        <td align="center">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                <tr>
+                    <td align="center">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%" style="background: #e8edf5;">
+                            @foreach ($outroLines as $key=>$line)
+                                @if($key % 2 == 0)
+                                <tr style="height: 50px;">
+                                    <td width="30%" style="color: #00204d; font-weight: 700; padding-left: 20px; {{ $key < count($outroLines)-2 ? 'border-bottom: 1px solid #d1dcec;' : '' }}">
+                                        {!! $line !!}
+                                    </td>
+                                @else
+                                    <td style="color: #00204d; font-weight: 600; {{ $key < count($outroLines)-1 ? 'border-bottom: 1px solid #d1dcec;' : '' }}">
+                                        {!! $line !!}
+                                    </td>
+                                </tr>
+                                @endif
+                            @endforeach
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 @endisset
+
+@component('mail::subcopyCustom')
+@endcomponent
 @endcomponent

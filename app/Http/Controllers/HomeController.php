@@ -235,13 +235,15 @@ class HomeController extends CommonController
                 }
             }
             try{
+                $yeuCauMoi = MdRequestManage::find($ma_yeu_cau);
                 $data = array(
-                    'ma_yeu_cau' => $ma_yeu_cau,
-                    'nguoi_gui'     => $newReq['user']->name,
-                    'phong_ban'     => $newReq['phong_ban']->ten_phong_ban,
-                    'tieu_de'         => $tieu_de,
-                    'noi_dung'       => $noi_dung,
-                    'ma_trang_thai' => self::YEU_CAU_MOI
+                    'ma_yeu_cau'    => $ma_yeu_cau,
+                    'nguoi_gui'     => $yeuCauMoi['user']->name,
+                    'phong_ban'     => $yeuCauMoi['phong_ban']->ten_phong_ban,
+                    'tieu_de'       => $tieu_de,
+                    'noi_dung'      => $noi_dung,
+                    'ngay_tao'      => date('d/m/Y h:i:s', strtotime($yeuCauMoi->ngay_tao)),
+                    'ma_trang_thai' => self::YEU_CAU_MOI,
                 );
 
                 $managerUser = User::where('role', self::QUAN_LY)->get();
@@ -249,7 +251,7 @@ class HomeController extends CommonController
                 Notification::send($managerUser, new newRequest($data));
                 return redirect()->route('request')->with('success', 'Yêu cầu của bạn đã được tiếp nhận.');
             }catch (\Exception $exception){
-                return redirect()->route('request')->with('success', 'Yêu cầu của bạn đã được tiếp nhận.');
+                return redirect()->route('request')->with('success', 'Yêu cầu của bạn đã được tiếp nhận.'. $exception);
             }
         }catch (\Exception $exception){
             return redirect()->route('request')->with('error', 'Yêu cầu của bạn chưa được tiếp nhận, vui lòng thử lại');

@@ -32,4 +32,9 @@ class User extends Authenticatable
     {
         $this->notify(new resetPassword($token));
     }
+
+    public function phong_ban()
+    {
+        return $this->belongsTo('App\MdPhongBan', 'ma_phong_ban', 'ma_phong_ban');
+    }
 }

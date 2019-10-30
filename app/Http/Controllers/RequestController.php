@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\SendResponseMail;
 use App\MdFileUpload;
 use App\MdLoaiYeuCau;
+use App\MdPhongBan;
 use App\Notifications\requestAssignHandle;
 use App\Notifications\requestAssignInform;
 use App\Notifications\requestRejectHandle;
@@ -14,10 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\MdRequestManage;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use App\Jobs\QueueMailSend;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Storage;
 
 class RequestController extends CommonController
 {
@@ -271,6 +268,7 @@ class RequestController extends CommonController
                 }
                 try{
                     $yeuCau = MdRequestManage::with('user', 'xu_ly', 'phong_ban')->find($ma_yeu_cau);
+                    $phongBanXuLy = MdPhongBan::find($yeuCau->xu_ly['ma_phong_ban']);
                     $data = array(
                         'ma_yeu_cau' => $ma_yeu_cau,
                         'nguoi_gui'     => $yeuCau->user['name'],
@@ -278,8 +276,10 @@ class RequestController extends CommonController
                         'tieu_de'         => $yeuCau->tieu_de,
                         'noi_dung'       => $yeuCau->noi_dung,
                         'nguoi_xu_ly'   => $yeuCau->xu_ly['name'],
+                        'nguoi_xu_ly_pb' => $phongBanXuLy['ten_phong_ban'],
                         'yeu_cau_xu_ly' => $yeuCau->yeu_cau_xu_ly,
                         'thong_tin_xu_ly' => $yeuCau->thong_tin_xu_ly,
+                        'ngay_tao' => date('d/m/Y h:i:s', strtotime($yeuCau->ngay_tao)),
                         'trang_thai' => ($yeuCau->trang_thai == self::MAIL_YC_MOI ? "Yêu cầu mới" : ($yeuCau->trang_thai == self::TIEP_NHAN ? "Tiếp nhận" : ($yeuCau->trang_thai == self::DANG_XU_LY ? "Đang xử lý" : ($yeuCau->trang_thai == self::HOAN_THANH ? "Hoàn thành" : "Từ chối")))),
                         'ma_trang_thai' => $yeuCau->trang_thai,
                     );
@@ -469,8 +469,11 @@ class RequestController extends CommonController
                         'noi_dung'      => $yeuCau->noi_dung,
                         'nguoi_gui'     => $yeuCau->user['name'],
                         'phong_ban'     => $yeuCau->phong_ban['ten_phong_ban'],
+                        'nguoi_xu_ly'   => $yeuCau->xu_ly['name'],
                         'thong_tin_xu_ly' => $yeuCau->thong_tin_xu_ly,
-                        'trang_thai' => ($yeuCau->trang_thai == self::HOAN_THANH ? 'Hoàn thành' : ($yeuCau->trang_thai == self::TU_CHOI ? "Từ chối" : "")),
+                        'ngay_tao'      => date('d/m/Y h:i:s', strtotime($yeuCau->ngay_tao)),
+                        'ngay_xu_ly'    => date("d/m/Y h:i:s",strtotime($yeuCau->ngay_xu_ly)),
+                        'trang_thai' => ($yeuCau->trang_thai == self::HOAN_THANH ? 'Hoàn thành' : ($yeuCau->trang_thai == self::TU_CHOI ? "Từ chối" : ($yeuCau->trang_thai == self::YEU_CAU_MOI ? "Chuyển xử lý" : ""))),
                         'ma_trang_thai' => $newStatus == self::YEU_CAU_MOI ? '5' : $newStatus,
                     );
                     if ( $newStatus == self::HOAN_THANH || $newStatus == self::TU_CHOI) {
