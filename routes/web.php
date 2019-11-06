@@ -21,7 +21,7 @@ Route::get('/', ['as' => 'index', 'uses' => 'HomeController@index']);
 
 Route::get('/request', ['as' => 'request', 'uses' => 'HomeController@Request']);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::any('/get-user-phong-ban', 'HomeController@getUserList');
 
@@ -32,7 +32,7 @@ Route::get('/request-receipt', 'HomeController@receiptRequest');
 //tiếp nhận yêu cầu mới và phân công xử lý
 Route::get('/request-manage', 'RequestController@RequestManagement')->middleware('checkAdmin');
 Route::any('/get-request', 'RequestController@getRequest');
-Route::get('/request-assign/{id}', 'RequestController@requestAssign')->name('assignRequest')->middleware('checkAdmin');
+Route::get('/request-assign/{id}', 'RequestController@requestAssign')->name('assignRequest');//middleware('checkAdmin')
 
 //Danh sách các yêu cầu đã giao
 Route::get('/request-pending-manage', 'RequestController@RequestPendingManagement')->middleware('checkAdmin');
@@ -81,17 +81,22 @@ Route::post('/ckupload', 'FileController@ckUploadImage');
 
 Route::get('/manual-document', 'FileController@fileManualManage');
 
-Route::get('mail', function () {
-    $data = array(
-        'nguoi_gui' =>'Hải Long',
-        'phong_ban' => 'Quản lý',
-        'tieu_de' => 'tieu de yeu cau',
-        'ma_yeu_cau' => 'R000001',
-        'ngay_tao' => '19/10/2019',
-        'trang_thai' => 'yêu cầu mới',
-        'ma_trang_thai' => 0,
-    );
+Route::get('/approval-request', 'RequestController@approvalRequest');
 
-    return (new App\Notifications\newRequest($data))
-        ->toMail('chuhailong89@gmail.com');
-});
+//Route::get('mail', function () {
+//    $data = array(
+//        'nguoi_gui' =>'Hải Long',
+//        'phong_ban' => 'Quản lý',
+//        'tieu_de' => 'tieu de yeu cau',
+//        'ma_yeu_cau' => 'R000001',
+//        'ngay_tao' => '19/10/2019',
+//        'trang_thai' => 'yêu cầu mới',
+//        'ma_trang_thai' => 0,
+//    );
+//
+//    return (new App\Notifications\newRequest($data))
+//        ->toMail('chuhailong89@gmail.com');
+//});
+//Route::get('symlink', function (){
+//    return view('symlink');
+//});

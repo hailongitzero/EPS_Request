@@ -201,7 +201,14 @@ class RequestController extends CommonController
             ),
         );
 
-        return view('requestAssign', $contentData);
+        if (Auth::user()->role == 2){
+            return view('requestAssign', $contentData);
+        }elseif (MdRequestManage::where('ma_yeu_cau', $ma_yeu_cau)->where('cc_email', 'like', '%'.Auth::user()->email.'%')->count() > 0){
+            return view('requestApproveDetail', $contentData);
+        }else{
+            return redirect()->route('home');
+        }
+
     }
 
     public function requestAssignSet(Request $request){
@@ -279,7 +286,7 @@ class RequestController extends CommonController
                         'nguoi_xu_ly_pb' => $phongBanXuLy['ten_phong_ban'],
                         'yeu_cau_xu_ly' => $yeuCau->yeu_cau_xu_ly,
                         'thong_tin_xu_ly' => $yeuCau->thong_tin_xu_ly,
-                        'ngay_tao' => date('d/m/Y h:i:s', strtotime($yeuCau->ngay_tao)),
+                        'ngay_tao' => date('d/m/Y H:i:s', strtotime($yeuCau->ngay_tao)),
                         'trang_thai' => ($yeuCau->trang_thai == self::MAIL_YC_MOI ? "Yêu cầu mới" : ($yeuCau->trang_thai == self::TIEP_NHAN ? "Tiếp nhận" : ($yeuCau->trang_thai == self::DANG_XU_LY ? "Đang xử lý" : ($yeuCau->trang_thai == self::HOAN_THANH ? "Hoàn thành" : "Từ chối")))),
                         'ma_trang_thai' => $yeuCau->trang_thai,
                     );
@@ -471,8 +478,8 @@ class RequestController extends CommonController
                         'phong_ban'     => $yeuCau->phong_ban['ten_phong_ban'],
                         'nguoi_xu_ly'   => $yeuCau->xu_ly['name'],
                         'thong_tin_xu_ly' => $yeuCau->thong_tin_xu_ly,
-                        'ngay_tao'      => date('d/m/Y h:i:s', strtotime($yeuCau->ngay_tao)),
-                        'ngay_xu_ly'    => date("d/m/Y h:i:s",strtotime($yeuCau->ngay_xu_ly)),
+                        'ngay_tao'      => date('d/m/Y H:i:s', strtotime($yeuCau->ngay_tao)),
+                        'ngay_xu_ly'    => date("d/m/Y H:i:s",strtotime($yeuCau->ngay_xu_ly)),
                         'trang_thai' => ($yeuCau->trang_thai == self::HOAN_THANH ? 'Hoàn thành' : ($yeuCau->trang_thai == self::TU_CHOI ? "Từ chối" : ($yeuCau->trang_thai == self::YEU_CAU_MOI ? "Chuyển xử lý" : ""))),
                         'ma_trang_thai' => $newStatus == self::YEU_CAU_MOI ? '5' : $newStatus,
                     );
@@ -559,5 +566,35 @@ class RequestController extends CommonController
             $url = storage_path('app/').$file[0]->store_url;
             return response()->download($url, $file[0]->file_name);
         }
+    }
+
+    public function approvalRequest(){
+        $userID = Auth::user()->username;
+
+        $totalNewRequest = MdRequestManage::whereIn('trang_thai', [0])->count();
+        $pendingRequest = MdRequestManage::whereIn('trang_thai', [1,2])->count();
+        $totalAssignRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1,2])->count();
+        $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->count();
+        $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3,4])->count();
+        $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3,4])->count();
+
+        $assignedPerson = User::whereIn('role', [1])->get();
+
+        $dsRequest = MdRequestManage::with(['phong_ban','user'])->where('cc_email', 'like', '%' . Auth::user()->email . '%' )->orderBy('ngay_tao', 'desc')->get();
+
+        $contentData = array(
+            'dsRequest' => $dsRequest,
+            'assignedPerson' => $assignedPerson,
+            'masterData' => array(
+                'activeMenu' => 7,
+                'totalNewRequest' => $totalNewRequest,
+                'totalAssignRequest' => $totalAssignRequest,
+                'pendingRequest' => $pendingRequest,
+                'totalMyRequest' => $totalMyRequest,
+                'totalMyCompleteRequest' => $totalMyCompleteRequest,
+                'totalCompleteRequest' => $totalCompleteRequest,
+            )
+        );
+        return view('requestApprove', $contentData);
     }
 }

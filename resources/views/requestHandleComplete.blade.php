@@ -35,7 +35,7 @@
                 <div class="box-title">
                     <h3><i class="fa fa-table"></i> Quản Lý Yêu Cầu</h3>
                 </div>
-                <div class="box-content">
+                <div class="box-content overflow-y">
                     <div class="clearfix"></div>
                     <div class="table-responsive" style="border:0">
                         <table class="table table-advance" id="quan-ly-yeu-cau">

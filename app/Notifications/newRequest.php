@@ -54,6 +54,7 @@ class newRequest extends Notification implements ShouldQueue
             ->line(Lang::getFromJson($this->data['phong_ban']))
             ->line(Lang::getFromJson('Ngày gửi: '))
             ->line(Lang::getFromJson($this->data['ngay_tao']))
+            ->cc($this->data['cc_email'])
             ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai'], 'trang_thai'=> 'Yêu cầu mới', 'tieu_de' => $this->data['tieu_de']]);
     }
 

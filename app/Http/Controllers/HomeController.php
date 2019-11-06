@@ -134,6 +134,7 @@ class HomeController extends CommonController
         }
         $phongBan = MdPhongBan::orderBy('ma_phong_ban')->get();
         $loaiYc = MdLoaiYeuCau::OrderBy('loai_yeu_cau')->get();
+        $userPb = MdPhongBan::with('user')->get();
 
         $contentData = array(
             'masterData' => array(
@@ -147,6 +148,7 @@ class HomeController extends CommonController
             ),
             'phongBan' => $phongBan,
             'loai_yc' => $loaiYc,
+            'userPb' => $userPb,
         );
         return view('request', $contentData);
     }
@@ -172,6 +174,10 @@ class HomeController extends CommonController
         foreach ($nguoi_gui_info as $key=>$val){
             $nguoi_gui = $val->name;
         }
+        $ccEmail = $request->input('cc_email');
+        if ($ccEmail != null){
+            $ccEmail = implode(",",$ccEmail);
+        }
 
         $maxKey = MdRequestManage::max('ma_yeu_cau');
         if ($maxKey === NULL){
@@ -196,6 +202,7 @@ class HomeController extends CommonController
         $newReq->tieu_de = $tieu_de;
         $newReq->noi_dung = $noi_dung;
         $newReq->loai_yeu_cau = $loai_yeu_cau;
+        $newReq->cc_email = $ccEmail;
         if (isset($han_xu_ly)){
             $curentDate = date('Y-m-d');
             $timestamp = strtotime(str_replace('/', '-', $han_xu_ly));
@@ -240,9 +247,10 @@ class HomeController extends CommonController
                     'ma_yeu_cau'    => $ma_yeu_cau,
                     'nguoi_gui'     => $yeuCauMoi['user']->name,
                     'phong_ban'     => $yeuCauMoi['phong_ban']->ten_phong_ban,
+                    'cc_email'      => explode(',', $ccEmail),
                     'tieu_de'       => $tieu_de,
                     'noi_dung'      => $noi_dung,
-                    'ngay_tao'      => date('d/m/Y h:i:s', strtotime($yeuCauMoi->ngay_tao)),
+                    'ngay_tao'      => date('d/m/Y H:i:s', strtotime($yeuCauMoi->ngay_tao)),
                     'ma_trang_thai' => self::YEU_CAU_MOI,
                 );
 

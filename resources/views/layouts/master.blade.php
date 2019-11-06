@@ -217,6 +217,10 @@
                                         @endif
                                     </a>
                                 </li>
+                                <li class="{{ $masterData['activeMenu'] == 10 ? "active" : "" }}">
+                                    <a href="{{url('approval-request')}}">Xem Để Biết
+                                    </a>
+                                </li>
                             @endif
                             <li class="{{ $masterData['activeMenu'] == 8 ? "active" : "" }}">
                                 <a href="{{url('my-request')}}">Yêu cầu của tôi

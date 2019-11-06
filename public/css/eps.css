@@ -6052,6 +6052,11 @@ Custom Css
 .auto-overflow{
     overflow: auto;
 }
+@media (max-width: 1023px) {
+    .overflow-y{
+        overflow-y: auto;
+    }
+}
 @media (max-width: 991px){
     .col-sm-mb-1{
         margin-bottom: 15px;

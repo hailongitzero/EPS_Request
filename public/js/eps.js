@@ -1110,7 +1110,6 @@ $(function() {
     $("#request_form").submit(function (e) {
         $('#phong_ban').prop('disabled', false);
         $('#ho_ten').prop('disabled', false);
-
         if ($('#phong_ban').val() == ''){
             alert('Vui lòng chọn phòng ban.');
             return false;
