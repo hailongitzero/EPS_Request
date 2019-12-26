@@ -45,6 +45,18 @@ class newRequest extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        if ($this->data['cc_email'] == null || $this->data['cc_email'] == ""){
+            return (new MailMessage)
+                ->subject(Lang::getFromJson('Thông báo tiếp nhận yêu cầu mới.'))
+                ->action(Lang::getFromJson('Chi tiết'), url(config('app.url').'/request-assign/'.$this->data['ma_yeu_cau']))
+                ->line(Lang::getFromJson('Họ tên: '))
+                ->line(Lang::getFromJson($this->data['nguoi_gui']))
+                ->line(Lang::getFromJson('Phòng ban: '))
+                ->line(Lang::getFromJson($this->data['phong_ban']))
+                ->line(Lang::getFromJson('Ngày gửi: '))
+                ->line(Lang::getFromJson($this->data['ngay_tao']))
+                ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai'], 'trang_thai'=> 'Yêu cầu mới', 'tieu_de' => $this->data['tieu_de']]);
+        }
         return (new MailMessage)
             ->subject(Lang::getFromJson('Thông báo tiếp nhận yêu cầu mới.'))
             ->action(Lang::getFromJson('Chi tiết'), url(config('app.url').'/request-assign/'.$this->data['ma_yeu_cau']))

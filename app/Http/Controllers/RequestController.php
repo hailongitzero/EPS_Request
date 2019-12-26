@@ -85,8 +85,6 @@ class RequestController extends CommonController
     {
         $userID = Auth::user()->username;
 
-        $userID = Auth::user()->username;
-
         $totalNewRequest = MdRequestManage::whereIn('trang_thai', [0])->count();
         $pendingRequest = MdRequestManage::whereIn('trang_thai', [1,2])->count();
         $totalAssignRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1,2])->count();
@@ -162,6 +160,8 @@ class RequestController extends CommonController
         $yeuCau = '';
         if (isset($ma_yeu_cau)){
             $yeuCau = MdRequestManage::with(['phong_ban','user','xu_ly', 'files', 'loai_yc'])->find($ma_yeu_cau);
+            $mailList = explode(",", $yeuCau->cc_email);
+            $yeuCau->ccMail = User::whereIn('email', $mailList)->get();
         }
 
         return response($yeuCau->toJson(), 200)->header('Content-Type', 'application/json');
@@ -285,6 +285,7 @@ class RequestController extends CommonController
                         'nguoi_xu_ly'   => $yeuCau->xu_ly['name'],
                         'nguoi_xu_ly_pb' => $phongBanXuLy['ten_phong_ban'],
                         'yeu_cau_xu_ly' => $yeuCau->yeu_cau_xu_ly,
+                        'ngay_xu_ly' => $yeuCau->ngay_xu_ly,
                         'thong_tin_xu_ly' => $yeuCau->thong_tin_xu_ly,
                         'ngay_tao' => date('d/m/Y H:i:s', strtotime($yeuCau->ngay_tao)),
                         'trang_thai' => ($yeuCau->trang_thai == self::MAIL_YC_MOI ? "Yêu cầu mới" : ($yeuCau->trang_thai == self::TIEP_NHAN ? "Tiếp nhận" : ($yeuCau->trang_thai == self::DANG_XU_LY ? "Đang xử lý" : ($yeuCau->trang_thai == self::HOAN_THANH ? "Hoàn thành" : "Từ chối")))),

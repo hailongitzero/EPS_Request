@@ -87,7 +87,7 @@
                             <select id="loai_yeu_cau" name="loai_yeu_cau" class="form-control" tabindex="1">
                                 @if(isset($loai_yc))
                                     @foreach($loai_yc as $key=>$val)
-                                        <option value="{{ $val->loai_yeu_cau }}">{{ $val->ten_loai_yeu_cau }}</option>
+                                        <option value="{{ $val->loai_yeu_cau }}" data-cc-mail-check="{{ $val->cc_mail_check }}">{{ $val->ten_loai_yeu_cau }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -127,7 +127,7 @@
                                     @foreach( $userPb as $key=>$val)
                                         <optgroup label="{{ $val->ten_phong_ban }}">
                                             @foreach( $val->user as $cKey=>$cVal)
-                                                <option value="{{ $cVal->email }}">{{ $cVal->name . '<'. $cVal->email . '>' }}</option>
+                                                <option value="{{ $cVal->email }}">{{ $cVal->name . ' < '. $cVal->email . ' >' }}</option>
                                             @endforeach
                                         </optgroup>
                                     @endforeach

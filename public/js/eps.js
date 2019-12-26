@@ -713,6 +713,16 @@ $(function() {
                 $('#loai_yeu_cau').val(response['loai_yeu_cau']);
                 $('p#loai_yeu_cau').text(response['loai_yc']['ten_loai_yeu_cau']);
 
+                if ($('#ccMaiList').length){
+                    var data = '';
+                    if (response['ccMail'].length > 0){
+                        response['ccMail'].forEach(function (mail, index) {
+                            data += mail['name'] + ' < ' + mail['email'] + ' > ' +'<br/>';
+                        });
+                    }
+                    $('#ccMaiList').html(data);
+                }
+
                 if (response['files'].length > 0){
                     var data = '';
                     response['files'].forEach(function (file, index) {
@@ -879,6 +889,16 @@ $(function() {
                     $('.attach-file').append(data);
                 }
 
+                if ($('#ccMaiList').length){
+                    var data = '';
+                    if (response['ccMail'].length > 0){
+                        response['ccMail'].forEach(function (mail, index) {
+                            data += mail['name'] + ' < ' + mail['email'] + ' > ' +'<br/>';
+                        });
+                    }
+                    $('#ccMaiList').html(data);
+                }
+
                 $('#thong_tin_xu_ly').text(response['thong_tin_xu_ly']);
 
                 if (response['trang_thai'] == HOAN_THANH || response['trang_thai'] == TU_CHOI){
@@ -1017,6 +1037,16 @@ $(function() {
                     $('#thong_tin_xu_ly').html("Đang cập nhật...");
                 }
 
+                if ($('#ccMaiList').length){
+                    var data = '';
+                    if (response['ccMail'].length > 0){
+                        response['ccMail'].forEach(function (mail, index) {
+                            data += mail['name'] + ' < ' + mail['email'] + ' > ' +'<br/>';
+                        });
+                    }
+                    $('#ccMaiList').html(data);
+                }
+
                 if (response['files'].length > 0){
                     var data = '';
                     response['files'].forEach(function (file, index) {
@@ -1110,26 +1140,35 @@ $(function() {
     $("#request_form").submit(function (e) {
         $('#phong_ban').prop('disabled', false);
         $('#ho_ten').prop('disabled', false);
-        if ($('#phong_ban').val() == ''){
+        $("#btn_submit_request").attr("disabled", true);
+
+        let check = true;
+        if ($('#phong_ban').val() == '' && check == true ){
             alert('Vui lòng chọn phòng ban.');
-            return false;
+            check = false;
         }
-        if ($('#ho_ten').val() == ''){
+        if ($('#ho_ten').val() == '' && check == true ){
             alert('Vui lòng nhập họ tên.');
+            check = false;
+        }
+        if ( $('#email').val() == '' && check == true ) {
+            var cfm = confirm('Nếu không nhập email bạn không thể nhận thông tin xử lý. Bạn muốn tiếp tục?');
+            if (cfm != true){
+                check = false;
+            }
+        }
+
+        if ($('#loai_yeu_cau option:selected').attr('data-cc-mail-check') == '1' && check == true ){
+            if ( $('#cc_email').val() == null || $('#cc_email').val() == ''){
+                alert('Vui cc email cho người phê duyệt đối với loại yêu cầu này.');
+                check = false;
+            }
+        }
+        if ( check == false){
+            $("#btn_submit_request").attr("disabled", false);
             return false;
         }
-        if ($('#email').val() == '') {
-            var cfm = confirm('Nếu không nhập email bạn không thể nhận thông tin xử lý. Bạn muốn tiếp tục?');
-            if (cfm == true){
-                $("#btn_submit_request").attr("disabled", true);
-                return true;
-            }else {
-                return false;
-            }
-        }else{
-            $("#btn_submit_request").attr("disabled", true);
-            return true;
-        }
+        return true;
     });
 
     if ($('#requestAnaly').length){
@@ -1416,10 +1455,17 @@ $(function() {
     };
     
     if ($('#ckfinder-widget-manual').length){
-        CKFinder.widget( 'ckfinder-widget-manual', {
+        var manualFinder = CKFinder.widget( 'ckfinder-widget-manual', {
             width: '100%',
             height: 700,
             id: 'manual_document',
+            // displayFoldersPanel: false,
+            chooseFiles: true,
         } );
-    }
+
+        manualFinder.on('expanderOnClick', function (e) {
+            console.log('asdas');
+        });
+    };
+
 });

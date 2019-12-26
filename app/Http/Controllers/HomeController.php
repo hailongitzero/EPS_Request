@@ -175,7 +175,7 @@ class HomeController extends CommonController
             $nguoi_gui = $val->name;
         }
         $ccEmail = $request->input('cc_email');
-        if ($ccEmail != null){
+        if ($ccEmail != null || $ccEmail != ""){
             $ccEmail = implode(",",$ccEmail);
         }
 
@@ -247,7 +247,7 @@ class HomeController extends CommonController
                     'ma_yeu_cau'    => $ma_yeu_cau,
                     'nguoi_gui'     => $yeuCauMoi['user']->name,
                     'phong_ban'     => $yeuCauMoi['phong_ban']->ten_phong_ban,
-                    'cc_email'      => explode(',', $ccEmail),
+                    'cc_email'      => $ccEmail != null || $ccEmail != "" ? explode(',', $ccEmail) : "",
                     'tieu_de'       => $tieu_de,
                     'noi_dung'      => $noi_dung,
                     'ngay_tao'      => date('d/m/Y H:i:s', strtotime($yeuCauMoi->ngay_tao)),

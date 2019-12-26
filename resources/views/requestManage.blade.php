@@ -102,6 +102,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Cc mail</b></label>
+                                    <div class="col-xs-12 col-sm-9 col-md-10 controls">
+                                        <p id="ccMaiList" class="content-label"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Nội Dung</b></label>
                                     <div class="col-xs-12 col-sm-9 col-md-10 controls">
                                         <p id="noi_dung" class="content-label auto-overflow"></p>
