@@ -290,11 +290,11 @@ class HomeController extends CommonController
      */
     public function getRequestAnalysisByWeek(Request $request)
     {
-        $status1 = db::select(db::raw("select date_format(ngay_tao,'%d') as 'ngay' ,count(trang_thai) as 'cnt' from eps_request_mgmt where date_format(ngay_tao,'%Y%m') = date_format(curdate(),'%Y%m') and trang_thai = 0 group by  date_format(ngay_tao,'%d')"));
-        $status2 = db::select(db::raw("select date_format(ngay_tao,'%d') as 'ngay' ,count(trang_thai) as 'cnt' from eps_request_mgmt where date_format(ngay_tao,'%Y%m') = date_format(curdate(),'%Y%m') and trang_thai = 1 group by  date_format(ngay_tao,'%d')"));
-        $status3 = db::select(db::raw("select date_format(ngay_tao,'%d') as 'ngay' ,count(trang_thai) as 'cnt' from eps_request_mgmt where date_format(ngay_tao,'%Y%m') = date_format(curdate(),'%Y%m') and trang_thai = 2 group by  date_format(ngay_tao,'%d')"));
-        $status4 = db::select(db::raw("select date_format(ngay_tao,'%d') as 'ngay' ,count(trang_thai) as 'cnt' from eps_request_mgmt where date_format(ngay_tao,'%Y%m') = date_format(curdate(),'%Y%m') and trang_thai = 3 group by  date_format(ngay_tao,'%d')"));
-        $status5 = db::select(db::raw("select date_format(ngay_tao,'%d') as 'ngay' ,count(trang_thai) as 'cnt' from eps_request_mgmt where date_format(ngay_tao,'%Y%m') = date_format(curdate(),'%Y%m') and trang_thai = 4 group by  date_format(ngay_tao,'%d')"));
+        $status1 = DB::select(DB::raw("select date_format(ngay_tao,'%d') as 'ngay' ,count(trang_thai) as 'cnt' from eps_request_mgmt where date_format(ngay_tao,'%Y%m') = date_format(curdate(),'%Y%m') and trang_thai = 0 group by  date_format(ngay_tao,'%d')"));
+        $status2 = DB::select(DB::raw("select date_format(ngay_tao,'%d') as 'ngay' ,count(trang_thai) as 'cnt' from eps_request_mgmt where date_format(ngay_tao,'%Y%m') = date_format(curdate(),'%Y%m') and trang_thai = 1 group by  date_format(ngay_tao,'%d')"));
+        $status3 = DB::select(DB::raw("select date_format(ngay_tao,'%d') as 'ngay' ,count(trang_thai) as 'cnt' from eps_request_mgmt where date_format(ngay_tao,'%Y%m') = date_format(curdate(),'%Y%m') and trang_thai = 2 group by  date_format(ngay_tao,'%d')"));
+        $status4 = DB::select(DB::raw("select date_format(ngay_tao,'%d') as 'ngay' ,count(trang_thai) as 'cnt' from eps_request_mgmt where date_format(ngay_tao,'%Y%m') = date_format(curdate(),'%Y%m') and trang_thai = 3 group by  date_format(ngay_tao,'%d')"));
+        $status5 = DB::select(DB::raw("select date_format(ngay_tao,'%d') as 'ngay' ,count(trang_thai) as 'cnt' from eps_request_mgmt where date_format(ngay_tao,'%Y%m') = date_format(curdate(),'%Y%m') and trang_thai = 4 group by  date_format(ngay_tao,'%d')"));
         $result = array(
             'yc_moi' => $status1,
             'yc_tiep_nhan' => $status2,
@@ -325,7 +325,7 @@ class HomeController extends CommonController
                 $sql .= ' and req.loai_yeu_cau = "' . $loai_yeu_cau . '"';
             }
             $sql .= ' group by pb.ten_phong_ban order by pb.ten_phong_ban ';
-            $result = db::select(db::raw($sql));
+            $result = DB::select(DB::raw($sql));
         } else {
             $sql = 'select pb.ten_phong_ban, count(req.ma_phong_ban) as total';
             $sql .= ' from eps_phong_ban pb left join eps_request_mgmt req on pb.ma_phong_ban = req.ma_phong_ban';
@@ -350,7 +350,7 @@ class HomeController extends CommonController
             $sql = 'select yc.loai_yeu_cau , yc.ten_loai_yeu_cau , count(req.loai_yeu_cau) as total from eps_loai_yeu_cau yc left join  eps_request_mgmt req';
             $sql .= ' on yc.loai_yeu_cau = req.loai_yeu_cau and date_format(req.ngay_tao, \'%Y-%m-%d\') between \'' . date('y-m-d', $dateFrom) . '\' and \'' . date('y-m-d', $dateTo) . '\'';
             $sql .= ' group by yc.loai_yeu_cau, yc.ten_loai_yeu_cau';
-            $result = db::select(db::raw($sql));
+            $result = DB::select(DB::raw($sql));
         } else {
             $sql = 'select yc.loai_yeu_cau , yc.ten_loai_yeu_cau , count(req.loai_yeu_cau) as total from eps_loai_yeu_cau yc left join  eps_request_mgmt req';
             $sql .= ' on yc.loai_yeu_cau = req.loai_yeu_cau';
