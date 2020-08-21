@@ -131,8 +131,8 @@
                 <ul class="weekly-stats">
                     @foreach($WeeklyAnalyData as $key=>$val)
                     <li>
-                        <span class="inline-sparkline">{{ $val->CNT }}</span>
-                        {{ $val->STS == 0 ? "Yêu cầu mới" : ($val->STS == 1 ? "Tiếp nhận yêu cầu" : ($val->STS == 2 ? "Đang xử lý" : ($val->STS == 3 ? "Hoàn thành" : "Từ chối"))) }}: <span class="value">{{ $val->TOT }}</span>
+                        <span class="inline-sparkline">{{ $val->cnt }}</span>
+                        {{ $val->sts == 0 ? "Yêu cầu mới" : ($val->sts == 1 ? "Tiếp nhận yêu cầu" : ($val->sts == 2 ? "Đang xử lý" : ($val->sts == 3 ? "Hoàn thành" : "Từ chối"))) }}: <span class="value">{{ $val->tot }}</span>
                     </li>
                     @endforeach
                 </ul>
@@ -185,17 +185,17 @@
                         </div>
                     </div>
                 </form>
-               
+
                 <table id="tongYeuCauTheoPhongBan" class="table table-bordered">
                     <tbody>
                     @foreach( $getTotalReqByDepartment as $key=>$val)
                         @if( ($key+1) % 2 == 1)
                             <tr>
-                                <td width="25%">{{ $val->TEN_PHONG_BAN }}</td>
-                                <td width="25%">{{ $val->TOTAL }}</td>
+                                <td width="25%">{{ $val->ten_phong_ban }}</td>
+                                <td width="25%">{{ $val->total }}</td>
                         @else
-                                <td width="25%">{{ $val->TEN_PHONG_BAN }}</td>
-                                <td width="25%">{{ $val->TOTAL }}</td>
+                                <td width="25%">{{ $val->ten_phong_ban }}</td>
+                                <td width="25%">{{ $val->total }}</td>
                             </tr>
                         @endif
                     @endforeach
@@ -239,13 +239,13 @@
                         </div>
                     </div>
                 </form>
-                
+
                 <table id="tb_tongYeuCauTheoLoai" class="table table-bordered">
                     <tbody>
                     @foreach( $totalReqByStatus as $key=>$val)
                         <tr>
-                            <td width="50%">{{ $val->TEN_LOAI_YEU_CAU }}</td>
-                            <td>{{ $val->TOTAL }}</td>
+                            <td width="50%">{{ $val->ten_loai_yeu_cau }}</td>
+                            <td>{{ $val->total }}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -254,4 +254,4 @@
         </div>
     </div>
 </div>
-@endsection 
+@endsection
