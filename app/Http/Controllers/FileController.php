@@ -52,6 +52,7 @@ class FileController extends CommonController
             $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->whereIn('trang_thai', [0,1,2,3,4])->count();
             $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3,4])->count();
             $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3,4])->count();
+       
         }else{
             $totalNewRequest = 0;
             $pendingRequest = 0;
@@ -59,6 +60,7 @@ class FileController extends CommonController
             $totalMyRequest = 0;
             $totalMyCompleteRequest = 0;
             $totalCompleteRequest = 0;
+           
         }
 
 
@@ -71,6 +73,7 @@ class FileController extends CommonController
                 'totalMyRequest' => $totalMyRequest,
                 'totalMyCompleteRequest' => $totalMyCompleteRequest,
                 'totalCompleteRequest' => $totalCompleteRequest,
+         
             ),
         );
         return view('fileManage', $contentData);

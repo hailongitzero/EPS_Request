@@ -55,7 +55,7 @@ class requestRejectHandle extends Notification implements ShouldQueue
             ->line(Lang::getFromJson('Ngày gửi: '))
             ->line(Lang::getFromJson($this->data['ngay_tao']))
             ->line(Lang::getFromJson('Ngày chuyển xử lý: '))
-            ->line(date('d/m/Y H:i:s'))
+            ->line(date('d/m/Y h:i:s'))
             ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai'], 'trang_thai'=>$this->data['trang_thai'], 'tieu_de' => $this->data['tieu_de']]);
     }
 

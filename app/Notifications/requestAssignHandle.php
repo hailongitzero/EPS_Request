@@ -45,12 +45,14 @@ class requestAssignHandle extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject(Lang::getFromJson('Thông báo xử lý yêu cầu.'))
             ->action(Lang::getFromJson('Chi tiết'), url(config('app.url').'/request-update/'.$this->data['ma_yeu_cau']))
-            ->line(Lang::getFromJson('Người tạo: '))
+            ->line(Lang::getFromJson('Người tạo '))
             ->line(Lang::getFromJson($this->data['nguoi_gui']))
-            ->line(Lang::getFromJson('Phòng ban: '))
+            ->line(Lang::getFromJson('Phòng/PX '))
             ->line(Lang::getFromJson($this->data['phong_ban']))
-            ->line(Lang::getFromJson('Ngày gửi: '))
+            ->line(Lang::getFromJson('Ngày tạo '))
             ->line(Lang::getFromJson($this->data['ngay_tao']))
+            ->line(Lang::getFromJson('Nội dung '))
+            ->line(Lang::getFromJson($this->data['noi_dung']))
             ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai'], 'trang_thai'=>$this->data['trang_thai'], 'tieu_de' => $this->data['tieu_de']]);
     }
 

@@ -210,7 +210,6 @@ $config['sessionWriteClose'] = true;
 
 $config['csrfProtection'] = true;
 
-
 /*============================== End of Configuration =================================*/
 
 /**

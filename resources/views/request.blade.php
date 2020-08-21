@@ -4,7 +4,8 @@
 @section('page-title')
 {{--<h1><i class="fa fa-file-o"></i> Yêu Cầu</h1>--}}
 {{--<h4>Tạo yêu cầu</h4>--}}
-<img src="/img/logo.png" alt="EPS Genco 3">
+<img src="/img/logo.png" alt="EPS Genco 3" alt width="15%">
+<img src="/img/dao.png" alt="EPS Genco" alt width="15%" align="right"/>
 @endsection
 
 @section('breadcrumb')
@@ -51,7 +52,7 @@
                         </div>
                     @endif
                     <div class="form-group">
-                        <label class="col-sm-4 col-md-3 col-lg-2 md-pb-1 control-label">Phòng Ban(*)</label>
+                        <label class="col-sm-4 col-md-3 col-lg-2 md-pb-1 control-label"><b>Phòng/PX (*)</b></label>
                         <div class="col-sm-8 col-md-9 col-lg-2 md-pb-1 controls">
                             <select id="phong_ban" name="phong_ban" class="form-control chosen" data-placeholder="Chọn phòng ban" tabindex="1" {{ isset(\Illuminate\Support\Facades\Auth::user()->ma_phong_ban) ? "disabled" : "" }}>
                                 <option value=""> </option>
@@ -62,19 +63,19 @@
                                 @endif
                             </select>
                         </div>
-                        <label class="col-sm-4 col-md-3 col-lg-1 md-pb-1 control-label">Họ tên(*)</label>
+                        <label class="col-sm-4 col-md-3 col-lg-1 md-pb-1 control-label"><b>Người gửi (*)</b></label>
                         <div class="col-sm-8 col-md-9 col-lg-2 md-pb-1 controls">
                             <select id="ho_ten" name="ho_ten" class="form-control chosen" data-placeholder="Người yêu cầu" tabindex="1" {{ isset(\Illuminate\Support\Facades\Auth::user()->username) ? "disabled" : "" }}>
                                 <option value="{{ \Illuminate\Support\Facades\Auth::user() ? \Illuminate\Support\Facades\Auth::user()->username : "" }}">{{ \Illuminate\Support\Facades\Auth::user() ? \Illuminate\Support\Facades\Auth::user()->name : "" }}</option>
                             </select>
                         </div>
-                        <label class="col-sm-4 col-md-3 col-lg-1 control-label">Điện Thoại(*)</label>
+                        <label class="col-sm-4 col-md-3 col-lg-1 control-label"><b>Điện Thoại (*)</b></label>
                         <div class="col-sm-8 col-md-9 col-lg-2 controls">
-                            <input id="dien_thoai" name="dien_thoai" type="text" value="{{ \Illuminate\Support\Facades\Auth::user() ? \Illuminate\Support\Facades\Auth::user()->dien_thoai : "" }}" placeholder="Điện Thoại" class="form-control"/>
+                            <input id="dien_thoai" name="dien_thoai" type="text" value="{{ \Illuminate\Support\Facades\Auth::user() ? \Illuminate\Support\Facades\Auth::user()->dien_thoai : "" }}" placeholder="Điện Thoại" class="form-control" required/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 col-md-3 col-lg-2 md-pb-1 control-label">Ưu Tiên</label>
+                        <label class="col-sm-4 col-md-3 col-lg-2 md-pb-1 control-label"><b>Mức độ</b></label>
                         <div class="col-sm-8 col-md-9 col-lg-2 md-pb-1 controls">
                             <select id="uu_tien" name="uu_tien" class="form-control" tabindex="1">
                                 <option value="0">Thấp</option>
@@ -82,7 +83,7 @@
                                 <option value="2">Cao</option>
                             </select>
                         </div>
-                        <label class="col-sm-4 col-md-3 col-lg-1 md-pb-1 control-label">Loại yêu cầu</label>
+                        <label class="col-sm-4 col-md-3 col-lg-1 md-pb-1 control-label"><b>Loại</b></label>
                         <div class="col-sm-8 col-md-9 col-lg-2 md-pb-1 controls">
                             <select id="loai_yeu_cau" name="loai_yeu_cau" class="form-control" tabindex="1">
                                 @if(isset($loai_yc))
@@ -92,7 +93,7 @@
                                 @endif
                             </select>
                         </div>
-                        <label class="col-sm-4 col-md-3 col-lg-1 control-label">Thời gian</label>
+                        <label class="col-sm-4 col-md-3 col-lg-1 control-label"><b>Hạn xử lý</b></label>
                         <div class="col-sm-8 col-md-9 col-lg-2 controls">
                             <div class="input-group date" id="han_xu_ly_yc_moi">
                                 <input id="han_xu_ly" name="han_xu_ly" type="text" class="form-control" data-date-format="dd/mm/yyyy">
@@ -103,25 +104,25 @@
                         </div>
                     </div>
                     <div class="form-group">
-                    <label class="col-sm-4 col-md-3 col-lg-2 md-pb-1 control-label">Đính kèm file</label>
+                    <label class="col-sm-4 col-md-3 col-lg-2 md-pb-1 control-label"><b>Đính kèm</b></label>
                         <div class="col-sm-8 col-md-9 col-lg-5 md-pb-1 controls"> 
                             <input id="dinh_kem" type="file" name="dinh_kem[]" class="form-control" accept=".pdf, .jpg, .png, .xls, .xlsx, .doc, .docx, .ppt, .pptx" multiple>
                         </div>
-                        <label class="col-sm-4 col-md-3 col-lg-1 control-label">Email</label>
+                        <label class="col-sm-4 col-md-3 col-lg-1 control-label"><b>Email</b></label>
                         <div class="col-sm-8 col-md-9 col-lg-2 controls">
                             <input id="email" name="email" type="text" placeholder="Email" class="form-control" value="{{ \Illuminate\Support\Facades\Auth::user() ? \Illuminate\Support\Facades\Auth::user()->email : "" }}" {{ \Illuminate\Support\Facades\Auth::user() ? (isset(\Illuminate\Support\Facades\Auth::user()->email) ? "disabled" : "") : "" }}/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 col-md-3 col-lg-2 md-pb-1 control-label">Tiêu Đề</label>
+                        <label class="col-sm-4 col-md-3 col-lg-2 md-pb-1 control-label"><b>Tiêu Đề</b></label>
                         <div class="col-sm-8 col-md-10 col-lg-8 controls">
                             <input id="tieu_de" name="tieu_de" type="text" placeholder="Tiêu Đề" class="form-control" required/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 col-md-3 col-lg-2 md-pb-1 control-label">Người phê duyệt</label>
+                        <label class="col-sm-4 col-md-3 col-lg-2 md-pb-1 control-label"><b>Cc</b> </label>
                         <div class="col-sm-8 col-md-10 col-lg-8 controls">
-                            <select id="cc_email" name="cc_email[]" data-placeholder="Email phê duyệt" class="form-control chosen" multiple="multiple" tabindex="6">
+                            <select id="cc_email" name="cc_email[]" data-placeholder="Email" class="form-control chosen" multiple="multiple" tabindex="6">
                                 <option value=""> </option>
                                 @if( isset($userPb) )
                                     @foreach( $userPb as $key=>$val)
@@ -135,10 +136,17 @@
                             </select>
                         </div>
                     </div>
+                    
                     <div class="form-group">
-                        <label class="col-sm-4 col-md-3 col-lg-2  control-label">Nội Dung</label>
+                        <label class="col-sm-4 col-md-3 col-lg-2  control-label"><b>Nội Dung</b></label>
                         <div class="col-sm-8 col-md-9 col-lg-8 controls">
                             <textarea id="noi_dung" name="noi_dung" class="form-control col-md-12 ckeditor" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 col-md-3 col-lg-2 md-pb-1 control-label"><b></b></label>
+                        <div class="col-sm-8 col-md-10 col-lg-8 controls">
+                        <label style="font-size: 20px; color: red"><b>Vui lòng nhập ID & Password Teamviewer để được hỗ trợ từ xa.</b></label>
                         </div>
                     </div>
                     <div class="form-group">

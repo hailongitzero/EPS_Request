@@ -3,7 +3,7 @@
 ?>
 @extends('layouts.master')
 @section('page-title')
-    <img src="/img/logo.png" alt="EPS Genco 3">
+    <img src="/img/logo.png" alt="EPS Genco 3" alt width="15%">
 @endsection
 @section('breadcrumb')
 <div id="breadcrumbs">
@@ -13,7 +13,11 @@
             <a href="index.html">Trang Chủ</a>
             <span class="divider"><i class="fa fa-angle-right"></i></span>
         </li>
-        <li class="active">Danh sách yêu cầu của tôi</li>
+        <li>
+                <a>Cá nhân</a>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+            <li class="active">Danh Sách Yêu Cầu Của Tôi</li>
     </ul>
 </div>
 @endsection
@@ -25,7 +29,7 @@
             <div class="box-title">
                 <h3><i class="fa fa-table"></i> Yêu Cầu Của Tôi</h3>
             </div>
-            <div class="box-content overflow-y">
+            <div class="box-content">
                 <div class="clearfix"></div>
                 <div class="table-responsive" style="border:0">
                     <table class="table table-advance" id="my-request">

@@ -66,6 +66,7 @@ class HomeController extends CommonController
             $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->whereIn('trang_thai', [0,1,2,3,4])->count();
             $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3,4])->count();
             $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3,4])->count();
+       
         }else{
             $totalNewRequest = 0;
             $pendingRequest = 0;
@@ -73,6 +74,7 @@ class HomeController extends CommonController
             $totalMyRequest = 0;
             $totalMyCompleteRequest = 0;
             $totalCompleteRequest = 0;
+    
         }
 
         $phongBan = MdPhongBan::orderBy('ma_phong_ban')->get();
@@ -94,6 +96,7 @@ class HomeController extends CommonController
                 'totalMyRequest' => $totalMyRequest,
                 'totalMyCompleteRequest' => $totalMyCompleteRequest,
                 'totalCompleteRequest' => $totalCompleteRequest,
+           
             ),
             'WeeklyAnalyData' => $this->getTotalRequestByWeekAndStatus(),
             'getTotalReqByDepartment' => $this->getTotalRequestByDepartment(),
@@ -124,6 +127,7 @@ class HomeController extends CommonController
             $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->count();
             $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3,4])->count();
             $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3,4])->count();
+           
         }else{
             $totalNewRequest = 0;
             $pendingRequest = 0;
@@ -131,6 +135,7 @@ class HomeController extends CommonController
             $totalMyRequest = 0;
             $totalMyCompleteRequest = 0;
             $totalCompleteRequest = 0;
+            
         }
         $phongBan = MdPhongBan::orderBy('ma_phong_ban')->get();
         $loaiYc = MdLoaiYeuCau::OrderBy('loai_yeu_cau')->get();
@@ -145,6 +150,7 @@ class HomeController extends CommonController
                 'totalMyRequest' => $totalMyRequest,
                 'totalMyCompleteRequest' => $totalMyCompleteRequest,
                 'totalCompleteRequest' => $totalCompleteRequest,
+                
             ),
             'phongBan' => $phongBan,
             'loai_yc' => $loaiYc,

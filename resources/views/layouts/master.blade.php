@@ -7,7 +7,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>EPS-Tiếp nhận xử lý yêu cầu</title>
+    <title>EPS - Tiếp nhận xử lý yêu cầu</title>
+    
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -28,7 +29,9 @@
     <link rel="stylesheet" href="../css/eps.css">
     <link rel="stylesheet" href="../css/eps-responsive.css">
 
-    <link rel="shortcut icon" href="../img/favicon.ico">
+    <link rel="shortcut icon" href="../img/logo2.png">
+
+    
 </head>
 
 <body>
@@ -40,9 +43,8 @@
         </button>
         <a class="navbar-brand" href="{{url('')}}">
             <small>
-                <i class="fa fa-desktop"></i>
-                EPS-Tiếp nhận xử lý yêu cầu
-            </small>
+                <i class="fa fa-ticket"></i>
+               <b> EPS - HỆ THỐNG TIẾP NHẬN YÊU CẦU SỬA CHỮA, HỖ TRỢ DỊCH VỤ CNTT </b>
         </a>
 
         <!-- BEGIN Navbar Buttons -->
@@ -106,8 +108,7 @@
             <!-- BEGIN Button User -->
             <li class="user-profile">
                 <a data-toggle="dropdown" href="#" class="user-menu dropdown-toggle">
-                    {{--<img class="nav-user-photo" src="../img/demo/avatar/avatar1.jpg" alt="Penny's Photo" />--}}
-                    <i class="fa fa-user"></i>
+                    <img class="nav-user-photo" src="../img/demo/avatar/avatar1.png" alt="Penny's Photo" />
                     <span class="hhh" id="user_info">
                         {{ \Illuminate\Support\Facades\Auth::user() ? \Illuminate\Support\Facades\Auth::user()->name : ""}}
                     </span>
@@ -119,13 +120,13 @@
                     <li>
                         @if(\Illuminate\Support\Facades\Auth::user())
                             <a href="{{ url('logout') }}">
-                                <i class="fa fa-off"></i>
-                                Logout
+                            <img class="nav-user-photo" src="../img/demo/avatar/avatar1.png" alt="Penny's Photo" />
+                                Đăng xuất
                             </a>
                         @else
                             <a href="{{ url('login') }}">
-                                <i class="fa fa-off"></i>
-                                Login
+                            <img class="nav-user-photo" src="../img/demo/avatar/avatar1.png" alt="Penny's Photo" />
+                                Đăng nhập
                             </a>
                         @endif
                     </li>
@@ -278,17 +279,17 @@
             <footer>
                 <div class="row">
                     <div class="col-sm-12 col-md-6 col-lg-6">
-                        <h4 class="text-center">CÔNG TY DỊCH VỤ SỮA CHỮA CÁC NHÀ MÁY ĐIỆN EVNGENCO 3</h4>
-                        <P class="text-center">332 Độc Lập (QL51, P.Phú Mỹ, Tx.Phú Mỹ, T.Bà Rịa Vũng Tàu</P>
+                        <h4 class="text-center"><b>CÔNG TY DỊCH VỤ SỬA CHỮA CÁC NHÀ MÁY ĐIỆN EVNGENCO 3</b></h4>
+                        <P class="text-center">332 Độc Lập (QL51), Phường Phú Mỹ, Thị xã Phú Mỹ, Tỉnh Bà Rịa Vũng Tàu</P>
                         <p class="text-center"><i class="fa fa-phone"></i>Tel: 0254 392 4436 <i class="fa fa-fax"></i>Fax: 0254 392 4437</p>
                     </div>
                     <div class="col-sm-12 col-md-3">
-                        <h4 class="text-left">LIÊN HỆ</h4>
+                        <h4 class="text-left"><b>LIÊN HỆ</b></h4>
                         <p class="text-left">Đỗ Hữu Lợi</p>
                         <p class="text-left"><i class="fa fa-envelope"></i> loidh@eps.genco3.vn <i class="fa fa-phone"></i> 64704</p>
                     </div>
                     <div class="col-sm-12 col-md-3">
-                        <h4 class="text-left">GÓP Ý</h4>
+                        <h4 class="text-left"><b>GÓP Ý</b></h4>
                         <p class="text-left">Trần Trung Thiên</p>
                         <p class="text-left"><i class="fa fa-envelope"></i> thientt@eps.genco3.vn <i class="fa fa-phone"></i> 64704</p>
                     </div>
@@ -329,6 +330,10 @@
     <!--flaty scripts-->
     <script src="../js/eps.js"></script>
     <script src="../js/eps-demo-codes.js"></script>
+    
+  <!--  <script type="text/javascript" src="http://yourjavascript.com/141525167513/hieuungphaohoa.js"></script>
+    <iframe src="http://www.nhaccuatui.com/mh/background/uCxytx9BioUS" width="1" height="1" frameborder="0" allowfullscreen=""></iframe>
+    <script type="text/javascript" src="//nhanh.vn/js/events/newyear.js"></script> -->
 
 </body>
 

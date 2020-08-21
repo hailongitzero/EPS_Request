@@ -157,7 +157,6 @@ $(function() {
         todayHighlight: true,
     }).datepicker('setDate', addDate);
 
-
     $('#tu_ngay_1, #den_ngay_1,#tu_ngay_2, #den_ngay_2').datepicker({
         format: 'dd/mm/yyyy',
         autoclose: true,
@@ -663,6 +662,7 @@ $(function() {
             contentType: false,  // tell jQuery not to set contentType
             dataType: 'json',
             success: function (response) {
+
                 $('#ma_yeu_cau').text(response['ma_yeu_cau']);
                 if (response['user']!==null){
                     $('#ho_ten').text(response['user']['name']);
@@ -674,6 +674,17 @@ $(function() {
                 $('#do_uu_tien').append('<span class="label label-large '+ uuTienColorClassObj[response['do_uu_tien']] +'">'+ uuTienObj[response['do_uu_tien']] +'</span>');
                 $('#tieu_de').text(response['tieu_de']);
                 $('#noi_dung').html(response['noi_dung']);
+                
+                if ($('#ccMaiList').length){
+                    var data = '';
+                    if (response['ccMail'].length != null && response['ccMail'].length != undefined){
+                        response['ccMail'].forEach(function (mail, index) {
+                            data += mail['name'] + ' < '+ mail['email'] +' > ' +'<br/>';
+                        });
+                    }
+                    $('#ccMaiList').html(data);
+                } 
+
                 $('#yeu_cau_xu_ly').html(response['yeu_cau_xu_ly']);
                 $('#ngay_xu_ly').text(response['ngay_xu_ly']);
                 if (response['xu_ly'] != null){
@@ -712,16 +723,6 @@ $(function() {
                 }
                 $('#loai_yeu_cau').val(response['loai_yeu_cau']);
                 $('p#loai_yeu_cau').text(response['loai_yc']['ten_loai_yeu_cau']);
-
-                if ($('#ccMaiList').length){
-                    var data = '';
-                    if (response['ccMail'].length > 0){
-                        response['ccMail'].forEach(function (mail, index) {
-                            data += mail['name'] + ' < ' + mail['email'] + ' > ' +'<br/>';
-                        });
-                    }
-                    $('#ccMaiList').html(data);
-                }
 
                 if (response['files'].length > 0){
                     var data = '';
@@ -767,6 +768,7 @@ $(function() {
         $('#do_uu_tien').text("");
         $('#tieu_de').text("");
         $('#noi_dung').html("");
+      //  $('#cc_email').html("");
         $('#loai_yeu_cau p').text("");
         $('#ngay_tao_yc').datepicker('update', '');
         $('#han_xu_ly_yc').datepicker('update', '');
@@ -855,11 +857,24 @@ $(function() {
                 $('#do_uu_tien').append('<span class="label label-large '+ uuTienColorClassObj[response['do_uu_tien']] +'">'+ uuTienObj[response['do_uu_tien']] +'</span>');
                 $('#tieu_de').text(response['tieu_de']);
                 $('#noi_dung').html(response['noi_dung']);
+                
+                if ($('#ccMaiList').length){
+                    var data = '';
+                    if (response['ccMail'].length != null && response['ccMail'].length != undefined){
+                        response['ccMail'].forEach(function (mail, index) {
+                            data += mail['name'] + ' < '+ mail['email'] +' > ' +'<br/>';
+                        });
+                    }
+                    $('#ccMaiList').html(data);
+                } 
+
                 $('#yeu_cau_xu_ly').html(response['yeu_cau_xu_ly']);
                 $('#nguoi_xu_ly').text(response['xu_ly']['name'])
                 CKEDITOR.instances['thong_tin_xu_ly'].setData(response['thong_tin_xu_ly']);
 
-                $('#loai_yeu_cau').text(response['loai_yc']['loai_yeu_cau'])
+                $('#loai_yeu_cau').val(response['loai_yeu_cau']);
+                $('p#loai_yeu_cau').text(response['loai_yc']['ten_loai_yeu_cau']);
+
                 if (response['han_xu_ly'] !== null){
                     var date = new Date(response['han_xu_ly']);
                     $('#han_xu_ly').datepicker('setDate', date);
@@ -889,18 +904,7 @@ $(function() {
                     $('.attach-file').append(data);
                 }
 
-                if ($('#ccMaiList').length){
-                    var data = '';
-                    if (response['ccMail'].length > 0){
-                        response['ccMail'].forEach(function (mail, index) {
-                            data += mail['name'] + ' < ' + mail['email'] + ' > ' +'<br/>';
-                        });
-                    }
-                    $('#ccMaiList').html(data);
-                }
-
                 $('#thong_tin_xu_ly').text(response['thong_tin_xu_ly']);
-
                 if (response['trang_thai'] == HOAN_THANH || response['trang_thai'] == TU_CHOI){
                     $('#updateHandleRequest').attr('disabled','disabled');
                     $('#trang_thai').attr('disabled','disabled');
@@ -1006,6 +1010,16 @@ $(function() {
                 $('#tieu_de').text(response['tieu_de']);
                 $('#noi_dung').html(response['noi_dung']);
 
+                if ($('#ccMaiList').length){
+                    var data = '';
+                    if (response['ccMail'].length != null && response['ccMail'].length != undefined){
+                        response['ccMail'].forEach(function (mail, index) {
+                            data += mail['name'] + ' < '+ mail['email']+ ' > ' +'<br/>';
+                        });
+                    }
+                    $('#ccMaiList').html(data);
+                } 
+
                 $('#yeu_cau_xu_ly').html( response['yeu_cau_xu_ly'] != null ? response['yeu_cau_xu_ly'] : "Đang cập nhật...");
 
                 $('#nguoi_xu_ly').html(response['xu_ly'] != null ? response['xu_ly']['name'] : "Đang cập nhật...");
@@ -1037,16 +1051,6 @@ $(function() {
                     $('#thong_tin_xu_ly').html("Đang cập nhật...");
                 }
 
-                if ($('#ccMaiList').length){
-                    var data = '';
-                    if (response['ccMail'].length > 0){
-                        response['ccMail'].forEach(function (mail, index) {
-                            data += mail['name'] + ' < ' + mail['email'] + ' > ' +'<br/>';
-                        });
-                    }
-                    $('#ccMaiList').html(data);
-                }
-
                 if (response['files'].length > 0){
                     var data = '';
                     response['files'].forEach(function (file, index) {
@@ -1072,6 +1076,8 @@ $(function() {
         $('#do_uu_tien').text("");
         $('#tieu_de').text("");
         $('#noi_dung').html("");
+      
+        
         $('#yeu_cau_xu_ly').text("");
         $('#loai_yeu_cau').text("");
         $('#han_xu_ly').text("");
@@ -1157,10 +1163,9 @@ $(function() {
                 check = false;
             }
         }
-
         if ($('#loai_yeu_cau option:selected').attr('data-cc-mail-check') == '1' && check == true ){
             if ( $('#cc_email').val() == null || $('#cc_email').val() == ''){
-                alert('Vui cc email cho người phê duyệt đối với loại yêu cầu này.');
+                alert('Vui lòng chọn cc mail cho người phê duyệt đối với loại yêu cầu này.');
                 check = false;
             }
         }
@@ -1455,17 +1460,10 @@ $(function() {
     };
     
     if ($('#ckfinder-widget-manual').length){
-        var manualFinder = CKFinder.widget( 'ckfinder-widget-manual', {
+        CKFinder.widget( 'ckfinder-widget-manual', {
             width: '100%',
             height: 700,
             id: 'manual_document',
-            // displayFoldersPanel: false,
-            chooseFiles: true,
         } );
-
-        manualFinder.on('expanderOnClick', function (e) {
-            console.log('asdas');
-        });
-    };
-
+    }
 });

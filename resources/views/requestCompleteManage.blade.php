@@ -2,7 +2,7 @@
 ?>
 @extends('layouts.master')
 @section('page-title')
-    <img src="/img/logo.png" alt="EPS Genco 3">
+    <img src="/img/logo.png" alt="EPS Genco 3" alt width="15%">
 @endsection
 @section('breadcrumb')
 <div id="breadcrumbs">
@@ -12,7 +12,11 @@
             <a href="index.html">Trang Chủ</a>
             <span class="divider"><i class="fa fa-angle-right"></i></span>
         </li>
-        <li class="active">Quản Lý Yêu Cầu</li>
+        <li>
+                <a>Quản lý yêu cầu</a>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+            <li class="active">Hoàn thành</li>
     </ul>
 </div>
 @endsection
@@ -22,9 +26,9 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-title">
-                <h3><i class="fa fa-table"></i> Yêu Cầu Đã Xử Lý</h3>
+                <h3><i class="fa fa-table"></i>Danh sách Yêu cầu hoàn thành</h3>
             </div>
-            <div class="box-content overflow-y">
+            <div class="box-content">
                 <div class="clearfix"></div>
                 <div class="table-responsive" style="border:0">
                     <table class="table table-advance" id="quan-ly-yeu-cau">
@@ -32,13 +36,13 @@
                             <tr>
                                 <th style="width:25px">STT</th>
                                 {{--<th style="width:18px"><input type="checkbox" /></th>--}}
-                                <th class="text-center">Ngày tạo</th>
+                                <th class="text-center" style="width:123px">Ngày tạo</th>
                                 <th style="width:450px">Tiêu đề</th>
-                                <th>Người tạo</th>
+                                <th >Người tạo</th>
                                 <th>Phòng Ban</th>
-                                <th>Người xử lý</th>
-                                <th class="text-center">Ngày xử lý</th>
-                                <th class="text-center">Độ ưu tiên</th>
+                                <th >Người xử lý</th>
+                                <th class="text-center" style="width:125px">Ngày xử lý</th>
+                                <th class="text-center">Ưu tiên</th> 
                                 <th class="text-center">Trạng thái</th>
                             </tr>
                         </thead>
@@ -102,6 +106,14 @@
                                         <p id="do_uu_tien" class="content-label"></p>
                                     </div>
                                 </div>
+                                
+                                <div class="form-group">  
+                                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Cc mail</b></label>
+                                    <div class="col-xs-12 col-sm-9 col-md-10 controls">
+                                        <p id="ccMaiList" class="content-label"></p>
+                                    </div>
+                                </div>
+                                
                                 <div class="form-group">
                                     <label class="col-sm-3 col-lg-2 control-label"><b>Nội Dung</b></label>
                                     <div class="col-sm-9 col-lg-10 controls">
@@ -147,6 +159,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <div class="form-group">
                                     <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Trạng Thái</b></label>
                                     <div class="col-xs-8 col-sm-9 col-md-4 col-sm-mb-1 controls">

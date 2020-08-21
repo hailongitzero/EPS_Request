@@ -1,14 +1,13 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: HaiLong
  * Date: 4/2/2019
  * Time: 2:49 PM
  */
 ?>
 @extends('layouts.master')
 @section('page-title')
-    <img src="/img/logo.png" alt="EPS Genco 3">
+    <img src="/img/logo.png" alt="EPS Genco 3" alt width="15%">
 @endsection
 
 @section('breadcrumb')

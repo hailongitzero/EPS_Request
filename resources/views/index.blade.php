@@ -4,7 +4,12 @@
 @section('page-title')
 {{--<h1><i class="fa fa-file-o"></i> Trang Chủ</h1>--}}
 {{--<h4>Thống kê số liệu</h4>--}}
-<img src="/img/logo.png" alt="EPS Genco 3">
+<div>
+<img src="/img/logo.png" alt="EPS Genco 3" alt width="15%"/>
+
+<img src="/img/dao.png" alt="EPS Genco" alt width="15%" align="right"/>
+</div>
+
 @endsection
 
 @section('breadcrumb')
@@ -22,7 +27,7 @@
                     <div class="col-md-12">
                         <div class="tile tile-blue">
                             <div class="img">
-                                <i class="fa fa-archive"></i>
+                                <i class="fa fa-tags"></i>
                             </div>
                             <div class="content">
                                 <p class="big">{{ $totalReq }}</p>
@@ -38,7 +43,7 @@
                     <div class="col-md-12">
                         <div class="tile tile-light-blue">
                             <div class="img">
-                                <i class="fa fa-warning"></i>
+                                <i class="fa fa-sign-in"></i>
                             </div>
                             <div class="content">
                                 <p class="big">{{ $totalNewReq }}</p>
@@ -56,7 +61,7 @@
             <div class="col-md-6 tile-active">
                 <div class="tile tile-orange">
                     <div class="img">
-                        <i class="fa fa-reply"></i>
+                        <i class="fa fa-pencil"></i>
                     </div>
                     <div class="content">
                         <p class="big">{{ $totalRecpReq }}</p>
@@ -66,7 +71,7 @@
 
                 <div class="tile tile-pink">
                     <div class="img">
-                        <i class="fa fa-pencil-square-o"></i>
+                        <i class="fa fa-cogs"></i>
                     </div>
                     <div class="content">
                         <p class="big">{{ $totalHandleReq }}</p>
@@ -136,7 +141,7 @@
         </div>
     </div>
     <div class="col-md-7">
-        <div class="box box-orange">
+        <div class="box box-green">
             <div class="box-title">
                 <h3><i class="fa fa-bar-chart-o"></i> Tổng số yêu cầu theo phòng ban</h3>
                 <div class="box-tool">
@@ -180,6 +185,7 @@
                         </div>
                     </div>
                 </form>
+               
                 <table id="tongYeuCauTheoPhongBan" class="table table-bordered">
                     <tbody>
                     @foreach( $getTotalReqByDepartment as $key=>$val)
@@ -199,7 +205,7 @@
         </div>
     </div>
     <div class="col-md-5">
-        <div class="box box-orange">
+        <div class="box box-green">
             <div class="box-title">
                 <h3><i class="fa fa-bar-chart-o"></i> Tổng số yêu cầu theo loại yêu cầu</h3>
                 <div class="box-tool">
@@ -233,6 +239,7 @@
                         </div>
                     </div>
                 </form>
+                
                 <table id="tb_tongYeuCauTheoLoai" class="table table-bordered">
                     <tbody>
                     @foreach( $totalReqByStatus as $key=>$val)

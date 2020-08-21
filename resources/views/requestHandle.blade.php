@@ -1,15 +1,13 @@
 <?php
 /**
- * Created by PhpStorm.
 
- * Date: 4/4/2019
- * Time: 11:54 AM
  */
 
 ?>
 @extends('layouts.master',$masterData)
 @section('page-title')
-    <img src="/img/logo.png" alt="EPS Genco 3">
+    <img src="/img/logo.png" alt="EPS Genco 3" alt width="15%">
+    <img src="/img/dao.png" alt="EPS Genco" alt width="15%" align="right"/>
 @endsection
 @section('breadcrumb')
     <div id="breadcrumbs">
@@ -19,7 +17,11 @@
                 <a href="index.html">Trang Chủ</a>
                 <span class="divider"><i class="fa fa-angle-right"></i></span>
             </li>
-            <li class="active">Danh Sách Yêu Cầu Hỗ Trợ</li>
+            <li>
+                <a>Cá nhân</a>
+                <span class="divider"><i class="fa fa-angle-right"></i></span>
+            </li>
+            <li class="active">Yêu Cầu Được Giao</li>
         </ul>
     </div>
 @endsection
@@ -29,9 +31,9 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-title">
-                    <h3><i class="fa fa-table"></i> Quản Lý Yêu Cầu</h3>
+                    <h3><i class="fa fa-table"></i>Danh sách Yêu cầu Được giao</h3>
                 </div>
-                <div class="box-content overflow-y">
+                <div class="box-content">
                     <div class="clearfix"></div>
                     <div class="table-responsive" style="border:0">
                         <table class="table table-advance" id="danh-sach-yeu-cau">
@@ -59,7 +61,7 @@
                                         <td class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$val->user['name']}}</td>
                                         <td class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$val->phong_ban['ten_phong_ban']}}</td>
                                         <td class="text-center {{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{ date('d-m-Y', strtotime($val->han_xu_ly )) }}</td>
-                                        <td class="text-center"><span class="label {{ $val->do_uu_tien == 0 ? "label-info" : ($val->do_uu_tien == 1 ? "label-success" : "label-important") }}">{{ $val->do_uu_tien == 0 ? "Thấp" : ($val->do_uu_tien == 1 ? "Trung Bình" : "Cao" ) }}</span></td>
+                                        <td class="text-center"><span class="label {{ $val->do_uu_tien == 0 ? "label-info": $val->do_uu_tien == 1 ? "label-success" : "label-important" }}">{{ $val->do_uu_tien == 0 ? "Thấp": $val->do_uu_tien == 1 ? "Trung Bình" : "Cao"  }}</span></td>
                                         <td class="text-center">
                                             <span class="label {{$val->trang_thai == 0 ? "label-info" : ($val->trang_thai == 1 ? "label-warning" : ($val->trang_thai == 2 ? "label-magenta" : ($val->trang_thai == 3 ? "label-success" : "label-important"))) }}">
                                                 {{$val->trang_thai == 0 ? "Yêu cầu mới" : ($val->trang_thai == 1 ? "Tiếp nhận" : ($val->trang_thai == 2 ? "Đang xử lý" : ($val->trang_thai == 3 ? "Hoàn thành" : "Từ chối"))) }}
@@ -108,6 +110,13 @@
                                             <p id="do_uu_tien" class="content-label"></p>
                                         </div>
                                     </div>
+                                    <!-- tesst cc Email-->
+                                    <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Cc mail</b></label>
+                                        <div class="col-xs-12 col-sm-9 col-md-10 controls">
+                                            <p id="ccMaiList" class="content-label"></p>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Nội Dung</b></label>
                                         <div class="col-xs-12 col-sm-9 col-md-10 controls">
@@ -122,6 +131,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                    <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Loại yêu cầu</b></label>
+                                        <div class="col-xs-8 col-sm-9 col-md-4 col-sm-mb-1 controls">
+                                            <p id="loai_yeu_cau" class="content-label "></p>
+                                        </div>
                                         <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Ngày tạo</b></label>
                                         <div class="col-xs-7 col-sm-9 col-md-3 col-sm-mb-1 controls">
                                             <div id="ngay_tao_yc" class="input-group date col-sm-5 col-md-12">
@@ -131,15 +144,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <label class="col-xs-4 col-sm-3 col-md-2 col-md-push-1 control-label">Hạn xử lý</label>
-                                        <div class="col-xs-7 col-sm-9 col-md-3 col-md-push-1 controls">
-                                            <div class="input-group date col-sm-5 col-md-12" id="han_xu_ly_yc">
-                                                <input id="han_xu_ly" name="han_xu_ly" type="text" class="form-control" data-date-format="dd/mm/yyyy" disabled="disabled">
-                                                <div class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-th"></span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                     <div class="form-group">
                                         <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Trạng Thái</b></label>
@@ -152,6 +157,15 @@
                                                     <option value="3">Hoàn Thành</option>
                                                     <option value="4">Từ chối</option>
                                                 </select>
+                                            </div>
+                                        </div>
+                                        <label class="col-xs-4 col-sm-3 col-md-2 col-md-push-1 control-label"><b>Hạn xử lý</b></label>
+                                        <div class="col-xs-7 col-sm-9 col-md-3 col-md-push-1 controls">
+                                            <div class="input-group date col-sm-5 col-md-12" id="han_xu_ly_yc">
+                                                <input id="han_xu_ly" name="han_xu_ly" type="text" class="form-control" data-date-format="dd/mm/yyyy" disabled="disabled">
+                                                <div class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-th"></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

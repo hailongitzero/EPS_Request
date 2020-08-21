@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Login - FLATY Admin</title>
+    <title>EPS - Đăng nhập</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="../css/eps.css">
     <link rel="stylesheet" href="../css/eps-responsive.css">
 
-    <link rel="shortcut icon" href="http://thetheme.io/flaty/img/favicon.png">
+    <link rel="shortcut icon" href="../img/logo2.png">
 </head>
 <body class="login-page">
 
@@ -43,13 +43,13 @@
         <div class="form-group">
             <div class="controls">
                 <label class="checkbox">
-                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Ghi nhớ
                 </label>
             </div>
         </div>
         <div class="form-group">
             <div class="controls">
-                <button type="submit" class="btn btn-primary form-control">Đăng Nhập</button>
+                    <button type="submit"  class="btn btn-primary form-control">Đăng Nhập</button>
             </div>
         </div>
         <hr/>
