@@ -13,6 +13,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\MdRequestManage;
+use App\Notifications\requestExtendDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
@@ -48,31 +49,18 @@ class RequestController extends CommonController
      */
     public function RequestManagement()
     {
-        $userID = Auth::user()->username;
-
-        $totalNewRequest = MdRequestManage::whereIn('trang_thai', [0])->count();
-        $pendingRequest = MdRequestManage::whereIn('trang_thai', [1, 2])->count();
-        $totalAssignRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1, 2])->count();
-        $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->count();
-        $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3, 4])->count();
-        $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3, 4])->count();
         $assignedPerson = User::whereIn('role', [1])->get();
 
         $dsYeuCau = MdRequestManage::with(['phong_ban', 'user'])->where('trang_thai', 0)->orderBy('ngay_tao', 'desc')->get();
+
+        $dsYeuCau = $this->addCheckHandleDateClass($dsYeuCau);
+
         $loaiYc = MdLoaiYeuCau::OrderBy('loai_yeu_cau')->get();
         $contentData = array(
             'dsYeuCau' => $dsYeuCau,
             'assignedPerson' => $assignedPerson,
             'loai_yc' => $loaiYc,
-            'masterData' => array(
-                'activeMenu' => 3,
-                'totalNewRequest' => $totalNewRequest,
-                'totalAssignRequest' => $totalAssignRequest,
-                'pendingRequest' => $pendingRequest,
-                'totalMyRequest' => $totalMyRequest,
-                'totalMyCompleteRequest' => $totalMyCompleteRequest,
-                'totalCompleteRequest' => $totalCompleteRequest,
-            )
+            'masterData' => $this->masterData(3),
         );
         return view('requestManage', $contentData);
     }
@@ -84,32 +72,19 @@ class RequestController extends CommonController
      */
     public function RequestPendingManagement()
     {
-        $userID = Auth::user()->username;
-
-        $totalNewRequest = MdRequestManage::whereIn('trang_thai', [0])->count();
-        $pendingRequest = MdRequestManage::whereIn('trang_thai', [1, 2])->count();
-        $totalAssignRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1, 2])->count();
-        $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->count();
-        $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3, 4])->count();
-        $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3, 4])->count();
 
         $assignedPerson = User::whereIn('role', [1])->get();
         $loaiYc = MdLoaiYeuCau::OrderBy('loai_yeu_cau')->get();
 
         $dsYeuCau = MdRequestManage::with(['phong_ban', 'user', 'xu_ly'])->whereIn('trang_thai', [1, 2])->orderBy('trang_thai', 'asc')->orderBy('han_xu_ly', 'asc')->get();
+
+        $dsYeuCau = $this->addCheckHandleDateClass($dsYeuCau);
+
         $contentData = array(
             'dsYeuCau' => $dsYeuCau,
             'assignedPerson' => $assignedPerson,
             'loai_yc' => $loaiYc,
-            'masterData' => array(
-                'activeMenu' => 4,
-                'totalNewRequest' => $totalNewRequest,
-                'totalAssignRequest' => $totalAssignRequest,
-                'pendingRequest' => $pendingRequest,
-                'totalMyRequest' => $totalMyRequest,
-                'totalMyCompleteRequest' => $totalMyCompleteRequest,
-                'totalCompleteRequest' => $totalCompleteRequest,
-            )
+            'masterData' => $this->masterData(4),
         );
         return view('requestPendingManage', $contentData);
     }
@@ -121,32 +96,18 @@ class RequestController extends CommonController
      */
     public function RequestCompleteManagement()
     {
-        $userID = Auth::user()->username;
-
-        $totalNewRequest = MdRequestManage::whereIn('trang_thai', [0])->count();
-        $pendingRequest = MdRequestManage::whereIn('trang_thai', [1, 2])->count();
-        $totalAssignRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1, 2])->count();
-        $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->count();
-        $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3, 4])->count();
-        $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3, 4])->count();
-
         $assignedPerson = User::whereIn('role', [1])->get();
         $loaiYc = MdLoaiYeuCau::OrderBy('loai_yeu_cau')->get();
 
         $dsYeuCau = MdRequestManage::with(['phong_ban', 'user', 'xu_ly'])->whereIn('trang_thai', [3, 4])->orderBy('trang_thai', 'asc')->orderBy('ngay_xu_ly', 'desc')->get();
+
+        $dsYeuCau = $this->addCheckHandleDateClass($dsYeuCau);
+
         $contentData = array(
             'dsYeuCau' => $dsYeuCau,
             'assignedPerson' => $assignedPerson,
             'loai_yc' => $loaiYc,
-            'masterData' => array(
-                'activeMenu' => 5,
-                'totalNewRequest' => $totalNewRequest,
-                'totalAssignRequest' => $totalAssignRequest,
-                'pendingRequest' => $pendingRequest,
-                'totalMyRequest' => $totalMyRequest,
-                'totalMyCompleteRequest' => $totalMyCompleteRequest,
-                'totalCompleteRequest' => $totalCompleteRequest,
-            )
+            'masterData' => $this->masterData(5),
         );
         return view('requestCompleteManage', $contentData);
     }
@@ -176,14 +137,6 @@ class RequestController extends CommonController
      */
     public function requestAssign($ma_yeu_cau)
     {
-        $userID = Auth::user()->username;
-
-        $totalNewRequest = MdRequestManage::whereIn('trang_thai', [0])->count();
-        $pendingRequest = MdRequestManage::whereIn('trang_thai', [1, 2])->count();
-        $totalAssignRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1, 2])->count();
-        $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->count();
-        $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3, 4])->count();
-        $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3, 4])->count();
 
         $request = MdRequestManage::with('phong_ban', 'files', 'loai_yc')->where('ma_yeu_cau', $ma_yeu_cau)->orderBy('ngay_tao', 'desc')->get();
         $assignedPerson = User::whereIn('role', [1])->get();
@@ -193,15 +146,7 @@ class RequestController extends CommonController
             'request' => $request,
             'assignedPerson' => $assignedPerson,
             'loai_yc' => $loaiYc,
-            'masterData' => array(
-                'activeMenu' => 3,
-                'totalNewRequest' => $totalNewRequest,
-                'totalAssignRequest' => $totalAssignRequest,
-                'pendingRequest' => $pendingRequest,
-                'totalMyRequest' => $totalMyRequest,
-                'totalMyCompleteRequest' => $totalMyCompleteRequest,
-                'totalCompleteRequest' => $totalCompleteRequest,
-            ),
+            'masterData' => $this->masterData(3),
         );
 
         if (Auth::user()->role == 2) {
@@ -223,9 +168,6 @@ class RequestController extends CommonController
         $loai_yeu_cau = $request->input('loai_yeu_cau');
         $yeu_cau_xu_ly = $request->input('yeu_cau_xu_ly');
 
-        $timestamp = strtotime(str_replace('/', '-', $han_xu_ly));
-        $date = date('Y-m-d', $timestamp);
-
         $updateReq = MdRequestManage::find($ma_yeu_cau);
         if ($updateReq->trang_thai != self::YEU_CAU_MOI) {
             return redirect()->route('assignRequest', [$ma_yeu_cau])->with('error', 'Yêu cầu đã/đang được xử lý, không thể cập nhật.');
@@ -246,53 +188,19 @@ class RequestController extends CommonController
                     $updateReq->trang_thai = self::TIEP_NHAN;
                     $updateReq->nguoi_xu_ly = $nguoi_xu_ly;
                     if (isset($han_xu_ly)) {
-                        $updateReq->han_xu_ly = $date;
+                        $updateReq->han_xu_ly = $this->converDate($han_xu_ly, 'Y-m-d');
                     }
                     $updateReq->loai_yeu_cau = $loai_yeu_cau;
                     $updateReq->yeu_cau_xu_ly = $yeu_cau_xu_ly;
                     $updateReq->save();
                 }
                 if ($request->hasFile('attachFile')) {
-                    $files = $request->file('attachFile');
-                    $allowedfileExtension = ['pdf', 'jpg', 'png', 'docx', 'xlsx', 'pptx', 'doc', 'xls', 'ppt'];
-                    foreach ($files as $file) {
-                        $filename = $file->getClientOriginalName();
-                        $fileExtension = strtolower($file->getClientOriginalExtension());
-                        $checkExtension = in_array($fileExtension, $allowedfileExtension);
-
-                        if ($checkExtension) {
-                            $path = $file->store('public');
-                            $storeFileName = pathinfo($path)['basename'];
-                            try {
-                                $attachFile = new MdFileUpload();
-                                $attachFile->ma_yeu_cau = $ma_yeu_cau;
-                                $attachFile->file_name = $filename;
-                                $attachFile->store_file_name = $storeFileName;
-                                $attachFile->store_url = $path;
-                                $attachFile->save();
-                            } catch (\Exception $exception) {
-                            }
-                        }
-                    }
+                    $this->storageFile($request, $ma_yeu_cau);
                 }
                 try {
                     $yeuCau = MdRequestManage::with('user', 'xu_ly', 'phong_ban')->find($ma_yeu_cau);
-                    $phongBanXuLy = MdPhongBan::find($yeuCau->xu_ly['ma_phong_ban']);
-                    $data = array(
-                        'ma_yeu_cau' => $ma_yeu_cau,
-                        'nguoi_gui'     => $yeuCau->user['name'],
-                        'phong_ban'     => $yeuCau->phong_ban['ten_phong_ban'],
-                        'tieu_de'         => $yeuCau->tieu_de,
-                        'noi_dung'       => $yeuCau->noi_dung,
-                        'nguoi_xu_ly'   => $yeuCau->xu_ly['name'],
-                        'nguoi_xu_ly_pb' => $phongBanXuLy['ten_phong_ban'],
-                        'yeu_cau_xu_ly' => $yeuCau->yeu_cau_xu_ly,
-                        'ngay_xu_ly' => $yeuCau->ngay_xu_ly,
-                        'thong_tin_xu_ly' => $yeuCau->thong_tin_xu_ly,
-                        'ngay_tao' => date('d/m/Y H:i:s', strtotime($yeuCau->ngay_tao)),
-                        'trang_thai' => ($yeuCau->trang_thai == self::MAIL_YC_MOI ? "Yêu cầu mới" : ($yeuCau->trang_thai == self::TIEP_NHAN ? "Tiếp nhận" : ($yeuCau->trang_thai == self::DANG_XU_LY ? "Đang xử lý" : ($yeuCau->trang_thai == self::HOAN_THANH ? "Hoàn thành" : "Từ chối")))),
-                        'ma_trang_thai' => $yeuCau->trang_thai,
-                    );
+
+                    $data = $this->emailData($yeuCau);
                     if ($newStatus == self::YEU_CAU_MOI || $newStatus == self::TIEP_NHAN || $newStatus == self::DANG_XU_LY) {
                         //mail to assign person
                         $assignUserData = User::where('username', $nguoi_xu_ly)->get();
@@ -326,26 +234,14 @@ class RequestController extends CommonController
     {
 
         $userID = Auth::user()->username;
-        $totalNewRequest = MdRequestManage::whereIn('trang_thai', [0])->count();
-        $pendingRequest = MdRequestManage::whereIn('trang_thai', [1, 2])->count();
-        $totalAssignRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1, 2])->count();
-        $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->count();
-        $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3, 4])->count();
-        $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3, 4])->count();
 
         $dsRequest = MdRequestManage::with(['phong_ban', 'user'])->where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1, 2])->orderBy('trang_thai', 'desc')->orderBy('han_xu_ly', 'asc')->get();
 
+        $dsRequest = $this->addCheckHandleDateClass($dsRequest);
+
         $contentData = array(
             'dsRequest' => $dsRequest,
-            'masterData' => array(
-                'activeMenu' => 6,
-                'totalNewRequest' => $totalNewRequest,
-                'totalAssignRequest' => $totalAssignRequest,
-                'pendingRequest' => $pendingRequest,
-                'totalMyRequest' => $totalMyRequest,
-                'totalMyCompleteRequest' => $totalMyCompleteRequest,
-                'totalCompleteRequest' => $totalCompleteRequest,
-            )
+            'masterData' => $this->masterData(6),
         );
         return view('requestHandle', $contentData);
     }
@@ -359,30 +255,18 @@ class RequestController extends CommonController
     {
         $userID = Auth::user()->username;
 
-        $totalNewRequest = MdRequestManage::whereIn('trang_thai', [0])->count();
-        $pendingRequest = MdRequestManage::whereIn('trang_thai', [1, 2])->count();
-        $totalAssignRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1, 2])->count();
-        $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->count();
-        $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3, 4])->count();
-        $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3, 4])->count();
-
         $assignedPerson = User::whereIn('role', [1])->get();
 
         $dsRequest = MdRequestManage::with(['phong_ban', 'user'])->where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3, 4])->orderBy('ngay_xu_ly', 'desc')->get();
 
+        $dsRequest = $this->addCheckHandleDateClass($dsRequest);
+
         $contentData = array(
             'dsRequest' => $dsRequest,
             'assignedPerson' => $assignedPerson,
-            'masterData' => array(
-                'activeMenu' => 7,
-                'totalNewRequest' => $totalNewRequest,
-                'totalAssignRequest' => $totalAssignRequest,
-                'pendingRequest' => $pendingRequest,
-                'totalMyRequest' => $totalMyRequest,
-                'totalMyCompleteRequest' => $totalMyCompleteRequest,
-                'totalCompleteRequest' => $totalCompleteRequest,
-            )
+            'masterData' => $this->masterData(7),
         );
+
         return view('requestHandleComplete', $contentData);
     }
 
@@ -394,14 +278,8 @@ class RequestController extends CommonController
             return redirect('request-handle')->with('alert', 'Bạn không được phân quyền xử lý yêu cầu này.');
         }
 
-        $totalNewRequest = MdRequestManage::whereIn('trang_thai', [0])->count();
-        $pendingRequest = MdRequestManage::whereIn('trang_thai', [1, 2])->count();
-        $totalAssignRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1, 2])->count();
-        $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->count();
-        $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3, 4])->count();
-        $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3, 4])->count();
-
         $request = MdRequestManage::with(['phong_ban', 'user'])->where('ma_yeu_cau', $ma_yeu_cau)->orderBy('ngay_tao', 'desc')->get();
+
         foreach ($request as $key => $val) {
             if ($val->trang_thai == self::HOAN_THANH || $val->trang_thai == self::TU_CHOI) {
                 return redirect('request-handle')->with('alert', 'Yêu cầu này đã được xử lý.');
@@ -409,15 +287,7 @@ class RequestController extends CommonController
         }
         $contentData = array(
             'request' => $request,
-            'masterData' => array(
-                'activeMenu' => 6,
-                'totalNewRequest' => $totalNewRequest,
-                'totalAssignRequest' => $totalAssignRequest,
-                'pendingRequest' => $pendingRequest,
-                'totalMyRequest' => $totalMyRequest,
-                'totalMyCompleteRequest' => $totalMyCompleteRequest,
-                'totalCompleteRequest' => $totalCompleteRequest,
-            ),
+            'masterData' => $this->masterData(6),
         );
 
         return view('requestUpdate', $contentData);
@@ -429,7 +299,9 @@ class RequestController extends CommonController
         $newStatus = $request->input('trang_thai');
         $thong_tin_xu_ly = $request->input('thong_tin_xu_ly');
 
+        //get Request
         $updateReq = MdRequestManage::find($ma_yeu_cau);
+
         $reqUser = User::where('username', $updateReq->user_yeu_cau)->get();
         $managerUser = User::where('role', self::QUAN_LY)->get();
 
@@ -437,7 +309,6 @@ class RequestController extends CommonController
 
         if ($oldStatus == self::HOAN_THANH || $oldStatus == self::TU_CHOI) {
             return response(['info' => 'Fail', 'Content' => 'Yêu cầu đã được xử lý, không thể cập nhật.'], 200)->header('Content-Type', 'application/json');
-            //            return redirect()->route('requestUpdate', [$ma_yeu_cau])->with('error', 'Yêu cầu đã được xử lý, không thể cập nhật.');
         } else {
             try {
                 $updateReq->trang_thai = $newStatus == self::TIEP_NHAN ? self::DANG_XU_LY : $newStatus;
@@ -446,55 +317,36 @@ class RequestController extends CommonController
                     $updateReq->nguoi_xu_ly = Auth::user()->username;
                 }
                 $updateReq->thong_tin_xu_ly = $thong_tin_xu_ly;
-                if ($request->hasFile('attachFile')) {
-                    $files = $request->file('attachFile');
-                    $allowedfileExtension = ['pdf', 'jpg', 'png', 'docx', 'xlsx', 'pptx', 'doc', 'xls', 'ppt'];
-                    foreach ($files as $file) {
-                        $filename = $file->getClientOriginalName();
-                        $fileExtension = strtolower($file->getClientOriginalExtension());
-                        $checkExtension = in_array($fileExtension, $allowedfileExtension);
 
-                        if ($checkExtension) {
-                            $path = $file->store('public');
-                            $storeFileName = pathinfo($path)['basename'];
-                            try {
-                                $attachFile = new MdFileUpload();
-                                $attachFile->ma_yeu_cau = $ma_yeu_cau;
-                                $attachFile->file_name = $filename;
-                                $attachFile->store_file_name = $storeFileName;
-                                $attachFile->store_url = $path;
-                                $attachFile->save();
-                            } catch (\Exception $exception) {
-                                return response(['info' => 'Success', 'Content' => 'Cập nhật thất bại, không nhận được file đính kèm.'], 200)->header('Content-Type', 'application/json');
-                            }
-                        }
-                    }
+                if ($request->hasFile('attachFile')) {
+                    $this->storageFile($request, $ma_yeu_cau);
+                }
+                if ($updateReq->gia_han == 0 && $request->gia_han == 1) {
+
+                    $ngay_gia_han = $this->converDate($request->input('ngay_gia_han'), 'Y-m-d');
+
+                    $updateReq->gia_han = 1;
+                    $updateReq->ngay_gia_han = $ngay_gia_han;
+                    $updateReq->noi_dung_gia_han = $request->input('noi_dung_gia_han');
                 }
 
                 $updateReq->save();
                 $yeuCau = MdRequestManage::with('user', 'xu_ly', 'phong_ban')->find($ma_yeu_cau);
                 try {
-                    $data = array(
-                        'ma_yeu_cau'    => $ma_yeu_cau,
-                        'tieu_de'       => $yeuCau->tieu_de,
-                        'noi_dung'      => $yeuCau->noi_dung,
-                        'nguoi_gui'     => $yeuCau->user['name'],
-                        'phong_ban'     => $yeuCau->phong_ban['ten_phong_ban'],
-                        'nguoi_xu_ly'   => $yeuCau->xu_ly['name'],
-                        'thong_tin_xu_ly' => $yeuCau->thong_tin_xu_ly,
-                        'ngay_tao'      => date('d/m/Y H:i:s', strtotime($yeuCau->ngay_tao)),
-                        'ngay_xu_ly'    => date("d/m/Y H:i:s", strtotime($yeuCau->ngay_xu_ly)),
-                        'trang_thai' => ($yeuCau->trang_thai == self::HOAN_THANH ? 'Hoàn thành' : ($yeuCau->trang_thai == self::TU_CHOI ? "Từ chối" : ($yeuCau->trang_thai == self::YEU_CAU_MOI ? "Chuyển xử lý" : ""))),
-                        'ma_trang_thai' => $newStatus == self::YEU_CAU_MOI ? '5' : $newStatus,
-                    );
-                    if ($newStatus == self::HOAN_THANH || $newStatus == self::TU_CHOI) {
-                        Notification::send($reqUser, new requestComplete($data));
-                        if (Auth::user()->role == self::PHO_QUAN_LY) {
-                            Notification::send($managerUser, new requestComplete($data));
+                    $data = $this->emailData($yeuCau);
+
+                    if ($updateReq->gia_han == 0 && $request->gia_han == 1) {
+                        Notification::send($managerUser, new requestExtendDate($data));
+                    } else {
+                        if ($newStatus == self::HOAN_THANH || $newStatus == self::TU_CHOI) {
+                            Notification::send($reqUser, new requestComplete($data));
+                            if (Auth::user()->role == self::PHO_QUAN_LY) {
+                                Notification::send($managerUser, new requestComplete($data));
+                            }
                         }
-                    }
-                    if ($newStatus == self::YEU_CAU_MOI) {
-                        Notification::send($managerUser, new requestRejectHandle($data));
+                        if ($newStatus == self::YEU_CAU_MOI) {
+                            Notification::send($managerUser, new requestRejectHandle($data));
+                        }
                     }
 
                     return response(['info' => 'Success', 'Content' => 'Cập nhật thành công.'], 200)->header('Content-Type', 'application/json');
@@ -511,25 +363,13 @@ class RequestController extends CommonController
     {
         $userID = Auth::user()->username;
 
-        $totalNewRequest = MdRequestManage::whereIn('trang_thai', [0])->count();
-        $pendingRequest = MdRequestManage::whereIn('trang_thai', [1, 2])->count();
-        $totalAssignRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1, 2])->count();
-        $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->count();
-        $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3, 4])->count();
-        $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3, 4])->count();
+        $dsYeuCau = MdRequestManage::with(['phong_ban', 'user', 'xu_ly'])->where('user_yeu_cau', $userID)->orderBy('trang_thai', 'asc')->orderBy('ngay_tao', 'desc')->get();
 
-        $dsYeuCau = MdRequestManage::with(['phong_ban', 'user'])->where('user_yeu_cau', $userID)->orderBy('trang_thai', 'asc')->orderBy('ngay_tao', 'desc')->get();
+        $dsYeuCau = $this->addCheckHandleDateClass($dsYeuCau);
+
         $contentData = array(
             'dsYeuCau' => $dsYeuCau,
-            'masterData' => array(
-                'activeMenu' => 8,
-                'totalNewRequest' => $totalNewRequest,
-                'totalAssignRequest' => $totalAssignRequest,
-                'pendingRequest' => $pendingRequest,
-                'totalMyRequest' => $totalMyRequest,
-                'totalMyCompleteRequest' => $totalMyCompleteRequest,
-                'totalCompleteRequest' => $totalCompleteRequest,
-            )
+            'masterData' => $this->masterData(8),
         );
         return view('myRequest', $contentData);
     }
@@ -542,25 +382,10 @@ class RequestController extends CommonController
             return redirect('my-request')->with('alert', 'Bạn không tạo yêu cầu này.');
         }
 
-        $totalNewRequest = MdRequestManage::whereIn('trang_thai', [0])->count();
-        $pendingRequest = MdRequestManage::whereIn('trang_thai', [1, 2])->count();
-        $totalAssignRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1, 2])->count();
-        $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->count();
-        $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3, 4])->count();
-        $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3, 4])->count();
-
         $request = MdRequestManage::with('phong_ban')->where('ma_yeu_cau', $ma_yeu_cau)->orderBy('ngay_tao', 'desc')->get();
         $contentData = array(
             'request' => $request,
-            'masterData' => array(
-                'activeMenu' => 8,
-                'totalNewRequest' => $totalNewRequest,
-                'totalAssignRequest' => $totalAssignRequest,
-                'pendingRequest' => $pendingRequest,
-                'totalMyRequest' => $totalMyRequest,
-                'totalMyCompleteRequest' => $totalMyCompleteRequest,
-                'totalCompleteRequest' => $totalCompleteRequest,
-            ),
+            'masterData' => $this->masterData(8),
         );
 
         return view('myRequestDetail', $contentData);
@@ -577,31 +402,17 @@ class RequestController extends CommonController
 
     public function approvalRequest()
     {
-        $userID = Auth::user()->username;
-
-        $totalNewRequest = MdRequestManage::whereIn('trang_thai', [0])->count();
-        $pendingRequest = MdRequestManage::whereIn('trang_thai', [1, 2])->count();
-        $totalAssignRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1, 2])->count();
-        $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->count();
-        $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3, 4])->count();
-        $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3, 4])->count();
 
         $assignedPerson = User::whereIn('role', [1])->get();
 
         $dsRequest = MdRequestManage::with(['phong_ban', 'user'])->where('cc_email', 'like', '%' . Auth::user()->email . '%')->orderBy('ngay_tao', 'desc')->get();
 
+        $dsRequest = $this->addCheckHandleDateClass($dsRequest);
+
         $contentData = array(
             'dsRequest' => $dsRequest,
             'assignedPerson' => $assignedPerson,
-            'masterData' => array(
-                'activeMenu' => 7,
-                'totalNewRequest' => $totalNewRequest,
-                'totalAssignRequest' => $totalAssignRequest,
-                'pendingRequest' => $pendingRequest,
-                'totalMyRequest' => $totalMyRequest,
-                'totalMyCompleteRequest' => $totalMyCompleteRequest,
-                'totalCompleteRequest' => $totalCompleteRequest,
-            )
+            'masterData' => $this->masterData(7),
         );
         return view('requestApprove', $contentData);
     }

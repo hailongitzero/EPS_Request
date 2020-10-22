@@ -54,17 +54,17 @@
                             @if (isset($dsRequest))
                                 @foreach($dsRequest as $key=>$val)
                                     <tr class="table-flag-blue">
-                                        <td class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$key+1}}</td>
+                                        <td class="{{ $val->class }}">{{$key+1}}</td>
                                         {{--<td><input type="checkbox" /></td>--}}
-                                        <td class="text-center {{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{date('d-m-Y', strtotime($val->ngay_tao))}}</td>
-                                        <td><a href='#' data-content="{{ $val->ma_yeu_cau }}" data-toggle="modal" data-target="#dsRequestDetail"  class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$val->tieu_de}}</a></td>
-                                        <td class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$val->user['name']}}</td>
-                                        <td class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$val->phong_ban['ten_phong_ban']}}</td>
-                                        <td class="text-center {{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{ date('d-m-Y', strtotime($val->han_xu_ly )) }}</td>
-                                        <td class="text-center"><span class="label {{ $val->do_uu_tien == 0 ? "label-info": $val->do_uu_tien == 1 ? "label-success" : "label-important" }}">{{ $val->do_uu_tien == 0 ? "Thấp": $val->do_uu_tien == 1 ? "Trung Bình" : "Cao"  }}</span></td>
+                                        <td class="text-center {{ $val->class }}">{{date('d-m-Y', strtotime($val->ngay_tao))}}</td>
+                                        <td><a href='#' data-content="{{ $val->ma_yeu_cau }}" data-toggle="modal" data-target="#dsRequestDetail"  class="{{ $val->class }}">{{$val->tieu_de}}</a></td>
+                                        <td class="{{ $val->class }}">{{$val->user['name']}}</td>
+                                        <td class="{{ $val->class }}">{{$val->phong_ban['ten_phong_ban']}}</td>
+                                        <td class="text-center {{ $val->class }}">{{ date('d-m-Y', strtotime($val->han_xu_ly )) }}</td>
+                                        <td class="text-center"><span class="label {{ $val->prioClass }}">{{ $val->prioNm }}</span></td>
                                         <td class="text-center">
-                                            <span class="label {{$val->trang_thai == 0 ? "label-info" : ($val->trang_thai == 1 ? "label-warning" : ($val->trang_thai == 2 ? "label-magenta" : ($val->trang_thai == 3 ? "label-success" : "label-important"))) }}">
-                                                {{$val->trang_thai == 0 ? "Yêu cầu mới" : ($val->trang_thai == 1 ? "Tiếp nhận" : ($val->trang_thai == 2 ? "Đang xử lý" : ($val->trang_thai == 3 ? "Hoàn thành" : "Từ chối"))) }}
+                                            <span class="label {{$val->statusClass }}">
+                                                {{$val->statusMn }}
                                             </span>
                                         </td>
                                     </tr>
@@ -112,7 +112,7 @@
                                     </div>
                                     <!-- tesst cc Email-->
                                     <div class="form-group">
-                                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Cc mail</b></label>
+                                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Cc mail</b></label>
                                         <div class="col-xs-12 col-sm-9 col-md-10 controls">
                                             <p id="ccMaiList" class="content-label"></p>
                                         </div>
@@ -131,7 +131,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                    <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Loại yêu cầu</b></label>
+                                        <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Loại yêu cầu</b></label>
                                         <div class="col-xs-8 col-sm-9 col-md-4 col-sm-mb-1 controls">
                                             <p id="loai_yeu_cau" class="content-label "></p>
                                         </div>
@@ -144,7 +144,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                     <div class="form-group">
                                         <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Trạng Thái</b></label>
@@ -170,16 +170,41 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>File đính kèm</b></label>
+                                        <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Gia hạn</b></label>
+                                        <div class="col-xs-7 col-sm-9 col-md-3 col-sm-mb-1 controls">
+                                            <div class="input-group col-xs-12 col-sm-5 col-md-12">
+                                                <div id="gia_han_yn" class="make-switch has-switch" data-label-icon="" data-on-label="<i class='fa fa-check fa fa-white'></i>" data-off-label="<i class='fa fa-times'></i>">
+                                                    <input id="gia_han" name="gia_han" type="checkbox" disabled="disabled">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <label class="col-xs-4 col-sm-3 col-md-2 col-md-push-1 control-label"><b>Gia hạn tới</b></label>
+                                        <div class="col-xs-7 col-sm-9 col-md-3 col-md-push-1 controls">
+                                            <div class="input-group date col-sm-5 col-md-12" id="ngay_gia_han_div">
+                                                <input id="ngay_gia_han" name="ngay_gia_han" type="text" class="form-control" data-date-format="dd/mm/yyyy" disabled="disabled">
+                                                <div class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-th"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="div_gh_noi_dung" class="form-group" style="display: none;">
+                                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Thông tin gia hạn</b></label>
                                         <div class="col-xs-12 col-sm-9 col-md-10 controls">
-                                            <div class="attach-file"></div>
-                                            <input id="attachFile" type="file" name="attachFile[]" class="form-control" accept=".pdf, .jpg, .png, .xls, .xlsx, .doc, .docx, .ppt, .pptx" multiple>
+                                            <textarea id="noi_dung_gia_han" name="noi_dung_gia_han" class="form-control ckeditor" rows="4"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Phản hồi</b></label>
                                         <div class="col-xs-12 col-sm-9 col-md-10 controls">
                                             <textarea id="thong_tin_xu_ly" name="thong_tin_xu_ly" class="form-control ckeditor" rows="4"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>File đính kèm</b></label>
+                                        <div class="col-xs-12 col-sm-9 col-md-10 controls">
+                                            <div class="attach-file"></div>
+                                            <input id="attachFile" type="file" name="attachFile[]" class="form-control" accept=".pdf, .jpg, .png, .xls, .xlsx, .doc, .docx, .ppt, .pptx" multiple>
                                         </div>
                                     </div>
                                 </form>

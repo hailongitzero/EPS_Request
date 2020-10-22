@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\QueueMailSend;
 use App\MdFileUpload;
 use App\MdLoaiYeuCau;
 use Illuminate\Http\Request;
@@ -13,7 +12,6 @@ use App\User;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\newRequest;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Storage;
 
 class HomeController extends CommonController
 {

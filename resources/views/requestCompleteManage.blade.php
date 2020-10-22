@@ -42,7 +42,7 @@
                                 <th>Phòng Ban</th>
                                 <th >Người xử lý</th>
                                 <th class="text-center" style="width:125px">Ngày xử lý</th>
-                                <th class="text-center">Ưu tiên</th> 
+                                <th class="text-center">Ưu tiên</th>
                                 <th class="text-center">Trạng thái</th>
                             </tr>
                         </thead>
@@ -50,18 +50,18 @@
                             @if (isset($dsYeuCau))
                                 @foreach($dsYeuCau as $key=>$val)
                                 <tr class="table-flag-blue red">
-                                    <td class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$key+1}}</td>
+                                    <td class="{{ $val->class }}">{{$key+1}}</td>
                                     {{--<td><input type="checkbox" /></td>--}}
-                                    <td class="text-center {{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{date('d-m-Y', strtotime($val->ngay_tao))}}</td>
-                                    <td><a href='#' data-content="{{ $val->ma_yeu_cau }}" data-toggle="modal" data-target="#requestDetail"  class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$val->tieu_de}}</a></td>
-                                    <td class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$val->user['name']}}</td>
-                                    <td class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$val->phong_ban['ten_phong_ban']}}</td>
-                                    <td class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$val->xu_ly['name']}}</td>
-                                    <td class="text-center {{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{date('d-m-Y', strtotime($val->ngay_xu_ly ))}}</td>
-                                    <td class="text-center"><span class="label {{ $val->do_uu_tien == 0 ? "label-info": $val->do_uu_tien == 1 ? "label-success" : "label-important" }}">{{ $val->do_uu_tien == 0 ? "Thấp": $val->do_uu_tien == 1 ? "Trung Bình" : "Cao"  }}</span></td>
+                                    <td class="text-center {{ $val->class }}">{{date('d-m-Y', strtotime($val->ngay_tao))}}</td>
+                                    <td><a href='#' data-content="{{ $val->ma_yeu_cau }}" data-toggle="modal" data-target="#requestDetail"  class="{{ $val->class }}">{{$val->tieu_de}}</a></td>
+                                    <td class="{{ $val->class }}">{{$val->user['name']}}</td>
+                                    <td class="{{ $val->class }}">{{$val->phong_ban['ten_phong_ban']}}</td>
+                                    <td class="{{ $val->class }}">{{$val->xu_ly['name']}}</td>
+                                    <td class="text-center {{ $val->class }}">{{date('d-m-Y', strtotime($val->ngay_xu_ly ))}}</td>
+                                    <td class="text-center"><span class="label {{ $val->prioClass }}">{{ $val->prioNm }}</span></td>
                                     <td class="text-center">
-                                        <span class="label {{$val->trang_thai == 0 ? "label-info" : ($val->trang_thai == 1 ? "label-warning" : ($val->trang_thai == 2 ? "label-magenta" : ($val->trang_thai == 3 ? "label-success" : "label-important"))) }}">
-                                            {{$val->trang_thai == 0 ? "Yêu cầu mới" : ($val->trang_thai == 1 ? "Tiếp nhận" : ($val->trang_thai == 2 ? "Đang xử lý" : ($val->trang_thai == 3 ? "Hoàn thành" : "Từ chối"))) }}
+                                        <span class="label {{$val->statusClass }}">
+                                            {{$val->statusMn }}
                                         </span>
                                     </td>
                                 </tr>
@@ -106,14 +106,14 @@
                                         <p id="do_uu_tien" class="content-label"></p>
                                     </div>
                                 </div>
-                                
-                                <div class="form-group">  
+
+                                <div class="form-group">
                                     <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Cc mail</b></label>
                                     <div class="col-xs-12 col-sm-9 col-md-10 controls">
                                         <p id="ccMaiList" class="content-label"></p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label class="col-sm-3 col-lg-2 control-label"><b>Nội Dung</b></label>
                                     <div class="col-sm-9 col-lg-10 controls">
@@ -159,7 +159,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Trạng Thái</b></label>
                                     <div class="col-xs-8 col-sm-9 col-md-4 col-sm-mb-1 controls">
@@ -205,4 +205,4 @@
         </div>
     </div>
 </div>
-@endsection 
+@endsection

@@ -16,7 +16,9 @@ class checkUser
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->role < 1){
+        if (!Auth::user()) {
+            return redirect('/login');
+        } else if (Auth::user()->role < 1) {
             return redirect('/');
         }
         return $next($request);

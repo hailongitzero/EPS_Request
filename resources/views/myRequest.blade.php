@@ -1,5 +1,5 @@
 <?php
-//dd($dsYeuCau);
+// dd($dsYeuCau);
 ?>
 @extends('layouts.master')
 @section('page-title')
@@ -36,10 +36,9 @@
                         <thead>
                         <tr>
                             <th style="width:30px">STT</th>
-                            {{--<th style="width:18px"><input type="checkbox" /></th>--}}
                             <th class="text-center">Ngày Tạo</th>
                             <th>Tiêu Đề</th>
-                            <th>Người xử lý</th>
+                            <th class="text-center">Người xử lý</th>
                             <th class="text-center">Ngày xử lý</th>
                             <th class="text-center">Độ Ưu Tiên</th>
                             <th class="text-center">Trạng Thái</th>
@@ -49,16 +48,15 @@
                         @if (isset($dsYeuCau))
                             @foreach($dsYeuCau as $key=>$val)
                                 <tr class="table-flag-blue">
-                                    <td class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$key+1}}</td>
-                                    {{--<td><input type="checkbox" /></td>--}}
-                                    <td class="text-center {{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{ date('d-m-Y', strtotime($val->ngay_tao ))}}</td>
-                                    <td><a href='#' data-content="{{ $val->ma_yeu_cau }}" data-toggle="modal" data-target="#myRequestDetail"  class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$val->tieu_de}}</a></td>
-                                    <td class="{{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{$val->xu_ly['name']}}</td>
-                                    <td class="text-center {{ $val->ngay_xu_ly != null ? (date("Y-m-d",strtotime($val->ngay_xu_ly)) > date("Y-m-d",strtotime($val->han_xu_ly)) ? "important-red" : "") : (date("Y-m-d",strtotime($val->han_xu_ly)) < date("Y-m-d") && $val->han_xu_ly != null ? "important-red" : "") }}">{{date('d-m-Y', strtotime($val->ngay_xu_ly ))}}</td>
-                                    <td class="text-center"><span class="label {{ $val->do_uu_tien == 0 ? "label-info": $val->do_uu_tien == 1 ? "label-success" : "label-important" }}">{{ $val->do_uu_tien == 0 ? "Thấp": $val->do_uu_tien == 1 ? "Trung Bình" : "Cao"  }}</span></td>
+                                    <td class="{{ $val->class }}">{{$key+1}}</td>
+                                    <td class="text-center {{ $val->class }}">{{ date('d-m-Y', strtotime($val->ngay_tao ))}}</td>
+                                    <td><a href='#' data-content="{{ $val->ma_yeu_cau }}" data-toggle="modal" data-target="#myRequestDetail"  class="{{ $val->class }}">{{$val->tieu_de}}</a></td>
+                                    <td class="text-center {{ $val->class }}">{{$val->xu_ly != null ? $val->xu_ly['name'] : "-" }}</td>
+                                    <td class="text-center {{ $val->class }}">{{ $val->ngay_xu_ly != null ? date('d-m-Y', strtotime($val->ngay_xu_ly )) : "-" }}</td>
+                                    <td class="text-center"><span class="label {{ $val->prioClass }}">{{ $val->prioMn }}</span></td>
                                     <td class="text-center">
-                                    <span class="label {{$val->trang_thai == 0 ? "label-info" : ($val->trang_thai == 1 ? "label-warning" : ($val->trang_thai == 2 ? "label-magenta" : ($val->trang_thai == 3 ? "label-success" : "label-important"))) }}">
-                                        {{$val->trang_thai == 0 ? "Yêu cầu mới" : ($val->trang_thai == 1 ? "Tiếp nhận" : ($val->trang_thai == 2 ? "Đang xử lý" : ($val->trang_thai == 3 ? "Hoàn thành" : "Từ chối"))) }}
+                                    <span class="label {{ $val->statusClass }}">
+                                        {{ $val->statusMn }}
                                     </span>
                                     </td>
                                 </tr>
