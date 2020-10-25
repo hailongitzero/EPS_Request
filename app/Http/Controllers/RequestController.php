@@ -328,6 +328,7 @@ class RequestController extends CommonController
                     $updateReq->gia_han = 1;
                     $updateReq->ngay_gia_han = $ngay_gia_han;
                     $updateReq->noi_dung_gia_han = $request->input('noi_dung_gia_han');
+                    $updateReq->trang_thai = self::DANG_XU_LY;
                 }
 
                 $updateReq->save();

@@ -163,8 +163,33 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-
+                                <div id="div_gia_han" class="form-group" style="display:none;">
+                                    <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Gia hạn</b></label>
+                                    <div class="col-xs-7 col-sm-9 col-md-3 col-sm-mb-1 controls">
+                                        <div class="input-group col-sm-5 col-md-12">
+                                            <select id="gia_han" style="width:190px" name="gia_han" class="form-control" tabindex="1">
+                                                <option value="0">--</option>
+                                                <option value="1">Yêu cầu gia hạn</option>
+                                                <option value="2">Chấp nhận</option>
+                                                <option value="3">Từ chối</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <label class="col-xs-4 col-sm-3 col-md-2 col-md-push-1 control-label"><b>Gia hạn đến</b></label>
+                                    <div class="col-xs-7 col-sm-9 col-md-3 col-md-push-1 controls">
+                                        <div class="input-group date col-sm-5 col-md-12" id="ngay_gia_han_yc">
+                                            <input id="ngay_gia_han" name="ngay_gia_han" type="text" class="form-control" data-date-format="dd/mm/yyyy" disabled="disabled">
+                                            <div class="input-group-addon">
+                                                <span class="glyphicon glyphicon-th"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="div_gh_noi_dung"  class="form-group" style="display:none;">
+                                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Nội dung gia hạn</b></label>
+                                    <div class="col-xs-12 col-sm-9 col-md-10 controls">
+                                        <p id="noi_dung_gia_han" name="noi_dung_gia_han" class="content-label auto-overflow"></p>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Yêu Cầu</b></label>

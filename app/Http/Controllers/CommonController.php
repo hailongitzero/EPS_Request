@@ -98,6 +98,9 @@ class CommonController extends Controller
             } else if ($item->trang_thai == self::TIEP_NHAN) {
                 $item['statusMn'] = 'Tiếp nhận';
                 $item['statusClass'] = 'label-warning';
+            } else if ($item->trang_thai == self::DANG_XU_LY && $item->gia_han == 1) {
+                $item['statusMn'] = 'Gia hạn xử lý';
+                $item['statusClass'] = 'label-inverse';
             } else if ($item->trang_thai == self::DANG_XU_LY) {
                 $item['statusMn'] = 'Đang xử lý';
                 $item['statusClass'] = 'label-magenta';

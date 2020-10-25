@@ -11,15 +11,17 @@ use Illuminate\Support\Facades\Lang;
 class requestExtendDate extends Notification
 {
     use Queueable;
+    public $tries = 3; // Max tries
+    public $data;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -52,7 +54,7 @@ class requestExtendDate extends Notification
             ->line(Lang::getFromJson($this->data['nguoi_xu_ly']))
             ->line(Lang::getFromJson('Ngày gửi: '))
             ->line(Lang::getFromJson($this->data['ngay_tao']))
-            ->line(Lang::getFromJson('Ngày chuyển xử lý: '))
+            ->line(Lang::getFromJson('Ngày gia hạn xử lý: '))
             ->line(date('d/m/Y h:i:s'))
             ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai'], 'trang_thai' => $this->data['trang_thai'], 'tieu_de' => $this->data['tieu_de']]);
     }
