@@ -47,7 +47,6 @@
                                 <th style="min-width: 300px">Tiêu đề</th>
                                 <th>Người tạo</th>
                                 <th>Phòng ban</th>
-                               <!-- <th class="text-center">Ngày tạo</th> -->
                                 <th class="text-center">Ngày xử lý</th>
                                 <th class="text-center">Độ ưu tiên</th>
                                 <th class="text-center">Trạng thái</th>
@@ -64,10 +63,10 @@
                                         <td class="{{ $val->class }}">{{$val->user['name']}}</td>
                                         <td class="{{ $val->class }}">{{$val->phong_ban['ten_phong_ban']}}</td>
                                         <td class="text-center {{ $val->class }}">{{$val->ngay_xu_ly == null ? "" : date('d-m-Y', strtotime($val->ngay_xu_ly ))}}</td>
-                                        <td class="text-center"><span class="label {{ $val->prioClass }}">{{ $val->prioNm  }}</span></td>
+                                        <td class="text-center"><span class="label {{ $val->prioClass }}">{{ $val->prioMn  }}</span></td>
                                         <td class="text-center">
                                             <span class="label {{$val->statusClass }}">
-                                                {{$val->statusNm }}
+                                                {{$val->statusMn }}
                                             </span>
                                         </td>
                                     </tr>

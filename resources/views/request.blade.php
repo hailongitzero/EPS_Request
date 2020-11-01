@@ -86,6 +86,7 @@
                         <label class="col-sm-4 col-md-3 col-lg-1 md-pb-1 control-label"><b>Loại</b></label>
                         <div class="col-sm-8 col-md-9 col-lg-2 md-pb-1 controls">
                             <select id="loai_yeu_cau" name="loai_yeu_cau" class="form-control" tabindex="1">
+                                <option value="">--- Chọn loaị yêu cầu ---</option>
                                 @if(isset($loai_yc))
                                     @foreach($loai_yc as $key=>$val)
                                         <option value="{{ $val->loai_yeu_cau }}" data-cc-mail-check="{{ $val->cc_mail_check }}">{{ $val->ten_loai_yeu_cau }}</option>

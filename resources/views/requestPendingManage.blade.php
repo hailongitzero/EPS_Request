@@ -167,8 +167,7 @@
                                     <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Gia hạn</b></label>
                                     <div class="col-xs-7 col-sm-9 col-md-3 col-sm-mb-1 controls">
                                         <div class="input-group col-sm-5 col-md-12">
-                                            <select id="gia_han" style="width:190px" name="gia_han" class="form-control" tabindex="1">
-                                                <option value="0">--</option>
+                                            <select id="cbx_gia_han" style="width:190px" name="gia_han" class="form-control" tabindex="1">
                                                 <option value="1">Yêu cầu gia hạn</option>
                                                 <option value="2">Chấp nhận</option>
                                                 <option value="3">Từ chối</option>
@@ -210,7 +209,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                <button type="button" id="updateRequest" class="btn btn-primary">Cập Nhật</button>
+                <button type="button" id="updatePendingRequest" class="btn btn-primary">Cập Nhật</button>
             </div>
         </div>
     </div>

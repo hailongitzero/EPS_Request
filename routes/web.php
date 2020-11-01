@@ -81,4 +81,8 @@ Route::middleware(['checkUser'])->group(function () {
     Route::get('/manual-document', 'FileController@fileManualManage');
 
     Route::get('/approval-request', 'RequestController@approvalRequest');
+
+    Route::get('/request-extend-set', 'RequestController@requestExtendSet')->middleware('checkAdmin');
+    Route::post('/request-extend-set', 'RequestController@requestExtendSet')->middleware('checkAdmin');
+    
 });
