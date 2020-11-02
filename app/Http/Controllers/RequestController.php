@@ -413,8 +413,28 @@ class RequestController extends CommonController
         $contentData = array(
             'dsRequest' => $dsRequest,
             'assignedPerson' => $assignedPerson,
-            'masterData' => $this->masterData(7),
+            'masterData' => $this->masterData(10),
         );
         return view('requestApprove', $contentData);
+    }
+
+    public function requestExtendSet(Request $request){
+        try{
+            $ma_yeu_cau = $request->input('ma_yeu_cau');
+            $gia_han = $request->input('gia_han');
+            $extReq = MdRequestManage::find($ma_yeu_cau);
+            if ( $gia_han == 2 ){
+                $extReq->gia_han = $gia_han;
+                $extReq->han_xu_ly = $extReq->ngay_gia_han;
+            } else if ($gia_han == 3){
+                $extReq->gia_han = $gia_han;
+            }
+
+            $extReq->save();
+
+            return response(['info' => 'Success', 'Content' => 'Cập nhật thành công.'], 200)->header('Content-Type', 'application/json');
+        } catch (\Exception $e) {
+            return response(['info' => 'Success', 'Content' => 'Cập nhật thất bại.'], 200)->header('Content-Type', 'application/json');
+        }
     }
 }

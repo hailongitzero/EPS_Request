@@ -58,7 +58,7 @@
                                     <td class="{{ $val->class }}">{{$val->phong_ban['ten_phong_ban']}}</td>
                                     <td class="{{ $val->class }}">{{$val->xu_ly['name']}}</td>
                                     <td class="text-center {{ $val->class }}">{{date('d-m-Y', strtotime($val->ngay_xu_ly ))}}</td>
-                                    <td class="text-center"><span class="label {{ $val->prioClass }}">{{ $val->prioNm }}</span></td>
+                                    <td class="text-center"><span class="label {{ $val->prioClass }}">{{ $val->prioMn }}</span></td>
                                     <td class="text-center">
                                         <span class="label {{$val->statusClass }}">
                                             {{$val->statusMn }}

@@ -735,16 +735,7 @@ $(function () {
                     $('.attach-file').append(data);
                 }
 
-                if (response['trang_thai'] == DANG_XU_LY && response['gia_han'] == 1 ) {
-                    $('#updateHandleRequest').removeAttr('disabled');
-                    $('#han_xu_ly').attr('disabled', 'disabled');
-                    $('#nguoi_xu_ly').attr('disabled', 'disabled');
-                    $('#trang_thai').attr('disabled', 'disabled');
-                    $('#ngay_xu_ly').attr('disabled', 'disabled');
-                    $('#loai_yeu_cau').attr('disabled', 'disabled');
-                    $('#updateHandleRequest').removeAttr('disabled');
-                }
-                else if (response['trang_thai'] == TIEP_NHAN || response['trang_thai'] == DANG_XU_LY || response['trang_thai'] == HOAN_THANH || response['trang_thai'] == TU_CHOI) {
+                if (response['trang_thai'] == TIEP_NHAN || response['trang_thai'] == DANG_XU_LY || response['trang_thai'] == HOAN_THANH || response['trang_thai'] == TU_CHOI) {
                     $('#han_xu_ly').attr('disabled', 'disabled');
                     $('#nguoi_xu_ly').attr('disabled', 'disabled');
                     $('#trang_thai').attr('disabled', 'disabled');
@@ -752,6 +743,7 @@ $(function () {
                     $('#loai_yeu_cau').attr('disabled', 'disabled');
                     $('#updateRequest').attr('disabled', 'disabled');
                     $('#updateHandleRequest').attr('disabled', 'disabled');
+                    $('#updatePendingRequest').attr('disabled', 'disabled');
                 } else {
                     $('#han_xu_ly').removeAttr('disabled');
                     $('#nguoi_xu_ly').removeAttr('disabled');
@@ -760,14 +752,18 @@ $(function () {
                     $('#loai_yeu_cau').removeAttr('disabled');
                     $('#updateRequest').removeAttr('disabled');
                     $('#updateHandleRequest').removeAttr('disabled');
+                    $('#updatePendingRequest').removeAttr('disabled');
                 }
 
-                if (response['gia_han'] != 0) {
+                if (response['gia_han'] > 0 ) {
                     $('#div_gia_han').fadeIn(300);
                     $('#div_gh_noi_dung').fadeIn(300);
                     $('#gia_han').val(response['gia_han']);
                     $('#ngay_gia_han').datepicker('setDate', new Date(response['ngay_gia_han']));
                     $('#noi_dung_gia_han').html(response['noi_dung_gia_han']);
+                    if (response['gia_han'] > 1){
+                        $('#cbx_gia_han').attr('disabled', 'disabled');
+                    }
                 } else {
                     $('#div_gia_han').fadeOut(300);
                     $('#div_gh_noi_dung').fadeOut(300);
@@ -843,6 +839,45 @@ $(function () {
             error: function (response) {
                 alert('Cập nhật thất bại, vui lòng thử lại.');
                 window.location.href = window.location.origin + "/request-manage";
+            }
+        });
+        return false;
+    })
+
+    $('#updatePendingRequest').on('click', function () {
+        $('#updatePendingRequest').attr('disabled', true);
+
+        var gia_han = $('#cbx_gia_han option:selected').val();
+        var cfm = false;
+        if ( gia_han == 2) {
+            cfm = confirm('Bạn chắc chắn muốn chấp nhận yêu cầu gia hạn xử lý này?');
+        } else if ( gia_han == 3 ) {
+            cfm = confirm('Bạn chắc chắn muốn từ chối yêu cầu gia hạn xử lý này?');
+        }
+        if ( cfm == false) {
+            $('#updatePendingRequest').removeAttr('disabled');
+            return false;
+        }
+        var data = new FormData();
+        data.append('_token', $('meta[name="csrf-token"]').attr('content'));
+        data.append('header', $('meta[name="csrf-token"]').attr('content'));
+        data.append('ma_yeu_cau', $('#ma_yeu_cau').text());
+        data.append('gia_han', gia_han);
+
+        $.ajax({
+            type: 'POST',
+            url: '/request-extend-set',
+            data: data,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            dataType: 'json',
+            success: function (response) {
+                $('#requestDetail').modal('hide');
+                alert(response['Content']);
+                location.reload();
+            },
+            error: function (response) {
+                alert('Cập nhật thất bại, vui lòng thử lại.');
             }
         });
         return false;
@@ -1195,6 +1230,10 @@ $(function () {
             alert('Vui lòng nhập họ tên.');
             check = false;
         }
+        if ($('#loai_yeu_cau option:selected').val() == "" && check == true) {
+            alert('Vui lòng chọn loại yêu cầu.');
+            check = false;
+        }
         if ($('#email').val() == '' && check == true) {
             var cfm = confirm('Nếu không nhập email bạn không thể nhận thông tin xử lý. Bạn muốn tiếp tục?');
             if (cfm != true) {
@@ -1397,6 +1436,14 @@ $(function () {
         } else {
             $('#ngay_gia_han').removeAttr('disabled');
             $('#div_gh_noi_dung').fadeIn(300);
+        }
+    });
+
+    $('#cbx_gia_han').on('change', function() {
+        if ($(this).find('option:selected').val() > 1){
+            $('#updatePendingRequest').removeAttr('disabled');
+        } else {
+            $('#updatePendingRequest').attr('disabled', 'disabled');
         }
     });
 

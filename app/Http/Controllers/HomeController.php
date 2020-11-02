@@ -37,7 +37,21 @@ class HomeController extends CommonController
     {
         $sql = " select sts, group_concat(cnt order by seq separator ', ') as cnt, sum(cnt) as tot";
         $sql .= " from ( select seq, sts, coalesce(cnt, 0) as cnt";
-        $sql .= " from ( select seq, sts from (select seq from seq_0_to_6 ) seq join ( select seq as sts from seq_0_to_4 ) sts";
+        $sql .= " from ( select seq, sts from (
+            select 0 as seq from dual union all
+              select 1 as seq from dual union all
+              select 2 as seq from dual union all
+              select 3 as seq from dual union all
+              select 4 as seq from dual union all
+              select 5 as seq from dual union all
+              select 6 as seq from dual
+              ) seq join (
+                  select 0 as sts from dual union all
+                  select 1 as sts from dual union all
+                  select 2 as sts from dual union all
+                  select 3 as sts from dual union all
+                  select 4 as sts from dual
+                   ) sts";
         $sql .= " where seq.seq <= date_format(curdate(), '%w') order by sts, seq ) als left join";
         $sql .= " ( select date_format(ngay_tao,'%w') as tm, count(trang_thai) as cnt, trang_thai from `eps_request_mgmt`";
         $sql .= " where yearweek(ngay_tao, 1) = yearweek(curdate(), 1) group by date_format(ngay_tao,'%w'), trang_thai";
