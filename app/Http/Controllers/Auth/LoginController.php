@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -64,6 +64,8 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             // Authentication passed...
             return redirect()->intended('/');
+        } else {
+            return redirect()->intended('/login');
         }
     }
 
@@ -98,6 +100,6 @@ class LoginController extends Controller
         session_unset();
         Session::flush();
 
-        return $this->loggedOut($request) ?: redirect('/');
+        return $this->loggedOut($request) ?: redirect('/login');
     }
 }

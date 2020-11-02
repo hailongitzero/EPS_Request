@@ -12,16 +12,16 @@
 */
 
 Auth::routes();
-Route::middleware(['checkUser'])->group(function () {
-    Route::get('/logout', 'Auth\LoginController@logout');
+Route::get('/logout', 'Auth\LoginController@logout');
+
+Route::middleware(['middleware' => 'auth'])->group(function () {
+    
     //Route::get('/logout', function (){
     //    return redirect('login')->with(Auth::logout());
     //});
-    Route::get('/', ['as' => 'index', 'uses' => 'HomeController@index']);
+    Route::get('/', ['as' => 'index', 'uses' => 'HomeController@index'])->name('home');
 
     Route::get('/request', ['as' => 'request', 'uses' => 'HomeController@Request']);
-
-    Route::get('/', 'HomeController@index')->name('home');
 
     Route::any('/get-user-phong-ban', 'HomeController@getUserList');
 
