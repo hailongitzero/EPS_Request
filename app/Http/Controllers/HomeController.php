@@ -275,7 +275,7 @@ class HomeController extends CommonController
                 Notification::send($managerUser, new newRequest($data));
                 return redirect()->route('request')->with('success', 'Yêu cầu của bạn đã được tiếp nhận.');
             } catch (\Exception $exception) {
-                return redirect()->route('request')->with('success', 'Yêu cầu của bạn đã được tiếp nhận.' . $exception);
+                return redirect()->route('request')->with('success', 'Yêu cầu của bạn đã được tiếp nhận.');
             }
         } catch (\Exception $exception) {
             return redirect()->route('request')->with('error', 'Yêu cầu của bạn chưa được tiếp nhận, vui lòng thử lại');

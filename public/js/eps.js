@@ -759,10 +759,12 @@ $(function () {
                     $('#div_gia_han').fadeIn(300);
                     $('#div_gh_noi_dung').fadeIn(300);
                     $('#gia_han').val(response['gia_han']);
+                    $('#cbx_gia_han').val(response['gia_han']);
                     $('#ngay_gia_han').datepicker('setDate', new Date(response['ngay_gia_han']));
                     $('#noi_dung_gia_han').html(response['noi_dung_gia_han']);
                     if (response['gia_han'] > 1){
                         $('#cbx_gia_han').attr('disabled', 'disabled');
+                        $('#gia_han').attr('disabled', 'disabled');
                     }
                 } else {
                     $('#div_gia_han').fadeOut(300);
