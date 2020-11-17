@@ -13,6 +13,8 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\MdRequestManage;
+use App\Notifications\ExtendDateConfirm;
+use App\Notifications\ExtendDateInform;
 use App\Notifications\requestExtendDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -158,6 +160,11 @@ class RequestController extends CommonController
         }
     }
 
+    /**
+     * Request assign handle person
+     * @param Request
+     * @return Response
+     */
     public function requestAssignSet(Request $request)
     {
         $userId = Auth::user()->username;
@@ -169,6 +176,7 @@ class RequestController extends CommonController
         $yeu_cau_xu_ly = $request->input('yeu_cau_xu_ly');
 
         $updateReq = MdRequestManage::find($ma_yeu_cau);
+        
         if ($updateReq->trang_thai != self::YEU_CAU_MOI) {
             return redirect()->route('assignRequest', [$ma_yeu_cau])->with('error', 'Yêu cầu đã/đang được xử lý, không thể cập nhật.');
         } else if ($nguoi_xu_ly == "" && $newStatus != self::HOAN_THANH && $newStatus != self::TU_CHOI) {
@@ -197,28 +205,24 @@ class RequestController extends CommonController
                 if ($request->hasFile('attachFile')) {
                     $this->storageFile($request, $ma_yeu_cau);
                 }
-                try {
-                    $yeuCau = MdRequestManage::with('user', 'xu_ly', 'phong_ban')->find($ma_yeu_cau);
+                $yeuCau = MdRequestManage::with('user', 'xu_ly', 'phong_ban')->find($ma_yeu_cau);
 
-                    $data = $this->emailData($yeuCau);
-                    if ($newStatus == self::YEU_CAU_MOI || $newStatus == self::TIEP_NHAN || $newStatus == self::DANG_XU_LY) {
-                        //mail to assign person
-                        $assignUserData = User::where('username', $nguoi_xu_ly)->get();
-                        Notification::send($assignUserData, new requestAssignHandle($data));
+                $data = $this->emailData($yeuCau);
+                if ($newStatus == self::YEU_CAU_MOI || $newStatus == self::TIEP_NHAN || $newStatus == self::DANG_XU_LY) {
+                    //mail to assign person
+                    $assignUserData = User::where('username', $nguoi_xu_ly)->get();
+                    Notification::send($assignUserData, new requestAssignHandle($data));
 
-                        //mail to requester
-                        $reqUser = User::where('username', $updateReq->user_yeu_cau)->get();
-                        Notification::send($reqUser, new requestAssignInform($data));
-                    } else {
-                        //mail to requester
-                        $reqUser = User::where('username', $updateReq->user_yeu_cau)->get();
-                        Notification::send($reqUser, new requestComplete($data));
-                    }
-
-                    return response(['info' => 'success', 'Content' => 'Cập nhật thành công.'], 200)->header('Content-Type', 'application/json');
-                } catch (\Exception $exception) {
-                    return response(['info' => 'success', 'Content' => 'Cập nhật thành công.'], 200)->header('Content-Type', 'application/json');
+                    //mail to requester
+                    $reqUser = User::where('username', $updateReq->user_yeu_cau)->get();
+                    Notification::send($reqUser, new requestAssignInform($data));
+                } else {
+                    //mail to requester
+                    $reqUser = User::where('username', $updateReq->user_yeu_cau)->get();
+                    Notification::send($reqUser, new requestComplete($data));
                 }
+
+                return response(['info' => 'success', 'Content' => 'Cập nhật thành công.'], 200)->header('Content-Type', 'application/json');
             } catch (\Exception $exception) {
                 return response(['info' => 'fail', 'Content' => 'Cập nhật thất bại, vui lòng thử lại.'], 200)->header('Content-Type', 'application/json');
             }
@@ -270,6 +274,11 @@ class RequestController extends CommonController
         return view('requestHandleComplete', $contentData);
     }
 
+    /**
+     * Update Request
+     * @param ma_yeu_cau
+     * @return view
+     */
     public function requestUpdate($ma_yeu_cau)
     {
         $userID = Auth::user()->username;
@@ -293,6 +302,10 @@ class RequestController extends CommonController
         return view('requestUpdate', $contentData);
     }
 
+    /**
+     * Update Request Status
+     * @param Request
+     */
     public function requestUpdateStatus(Request $request)
     {
         $ma_yeu_cau = $request->input('ma_yeu_cau');
@@ -300,7 +313,7 @@ class RequestController extends CommonController
         $thong_tin_xu_ly = $request->input('thong_tin_xu_ly');
 
         //get Request
-        $updateReq = MdRequestManage::find($ma_yeu_cau);
+        $updateReq = MdRequestManage::with('user', 'xu_ly', 'phong_ban')->find($ma_yeu_cau);
 
         $reqUser = User::where('username', $updateReq->user_yeu_cau)->get();
         $managerUser = User::where('role', self::QUAN_LY)->get();
@@ -311,55 +324,50 @@ class RequestController extends CommonController
             return response(['info' => 'Fail', 'Content' => 'Yêu cầu đã được xử lý, không thể cập nhật.'], 200)->header('Content-Type', 'application/json');
         } else {
             try {
-                $updateReq->trang_thai = $newStatus == self::TIEP_NHAN ? self::DANG_XU_LY : $newStatus;
-                if ($newStatus == self::HOAN_THANH || $newStatus == self::TU_CHOI) {
-                    $updateReq->ngay_xu_ly = Carbon::now();
-                    $updateReq->nguoi_xu_ly = Auth::user()->username;
-                }
-                $updateReq->thong_tin_xu_ly = $thong_tin_xu_ly;
-
-                if ($request->hasFile('attachFile')) {
-                    $this->storageFile($request, $ma_yeu_cau);
-                }
                 if ($updateReq->gia_han == 0 && $request->gia_han == 1) {
-
                     $ngay_gia_han = $this->converDate($request->input('ngay_gia_han'), 'Y-m-d');
 
                     $updateReq->gia_han = 1;
                     $updateReq->ngay_gia_han = $ngay_gia_han;
                     $updateReq->noi_dung_gia_han = $request->input('noi_dung_gia_han');
                     $updateReq->trang_thai = self::DANG_XU_LY;
-                }
+                    $updateReq->save();
 
-                $updateReq->save();
-                $yeuCau = MdRequestManage::with('user', 'xu_ly', 'phong_ban')->find($ma_yeu_cau);
-                try {
-                    $data = $this->emailData($yeuCau);
+                    Notification::send($managerUser, new requestExtendDate($this->emailData($updateReq)));
 
-                    if ($updateReq->gia_han == 0 && $request->gia_han == 1) {
-                        Notification::send($managerUser, new requestExtendDate($data));
-                    } else {
-                        if ($newStatus == self::HOAN_THANH || $newStatus == self::TU_CHOI) {
-                            Notification::send($reqUser, new requestComplete($data));
-                            if (Auth::user()->role == self::PHO_QUAN_LY) {
-                                Notification::send($managerUser, new requestComplete($data));
-                            }
-                        }
-                        if ($newStatus == self::YEU_CAU_MOI) {
-                            Notification::send($managerUser, new requestRejectHandle($data));
-                        }
+                } else if ($newStatus == self::HOAN_THANH || $newStatus == self::TU_CHOI) {
+                    $updateReq->ngay_xu_ly = Carbon::now();
+                    $updateReq->nguoi_xu_ly = Auth::user()->username;
+                    $updateReq->thong_tin_xu_ly = $thong_tin_xu_ly;
+                    $updateReq->trang_thai = $newStatus;
+                    if ($request->hasFile('attachFile')) {
+                        $this->storageFile($request, $ma_yeu_cau);
                     }
+                    $updateReq->save();
 
-                    return response(['info' => 'Success', 'Content' => 'Cập nhật thành công.'], 200)->header('Content-Type', 'application/json');
-                } catch (\Exception $exception) {
-                    return response(['info' => 'Success', 'Content' => 'Cập nhật thành công, Nhưng không thể gửi được email. Vui lòng liên hệ quản trị viên.'], 200)->header('Content-Type', 'application/json');
+                    Notification::send($reqUser, new requestComplete($this->emailData($updateReq)));
+                    if (Auth::user()->role == self::PHO_QUAN_LY) {
+                        Notification::send($managerUser, new requestComplete($this->emailData($updateReq)));
+                    }
+                } else if ($newStatus == self::YEU_CAU_MOI){
+                    $updateReq->thong_tin_xu_ly = $thong_tin_xu_ly;
+                    $updateReq->trang_thai = $newStatus;
+                    if ($request->hasFile('attachFile')) {
+                        $this->storageFile($request, $ma_yeu_cau);
+                    }
+                    $updateReq->save();
+                    Notification::send($managerUser, new requestRejectHandle($this->emailData($updateReq)));
                 }
+                return response(['info' => 'Success', 'Content' => 'Cập nhật thành công.'], 200)->header('Content-Type', 'application/json');
             } catch (\Exception $exception) {
-                return response(['info' => 'Fail', 'Content' => 'Cập nhật thất bại, vui lòng thử lại.'], 200)->header('Content-Type', 'application/json');
+                return response(['info' => 'Fail', 'Content' => 'Cập nhật thất bại, vui lòng thử lại.'], 401)->header('Content-Type', 'application/json');
             }
         }
     }
 
+    /**
+     * List User Request
+     */
     public function myRequest()
     {
         $userID = Auth::user()->username;
@@ -375,6 +383,9 @@ class RequestController extends CommonController
         return view('myRequest', $contentData);
     }
 
+    /**
+     * Detail User Request
+     */
     public function myRequestDetail($ma_yeu_cau)
     {
         $userID = Auth::user()->username;
@@ -392,6 +403,10 @@ class RequestController extends CommonController
         return view('myRequestDetail', $contentData);
     }
 
+    /**
+     * Download file
+     * @param filename
+     */
     public function fileDownload($fileName)
     {
         $file = MdFileUpload::where('store_file_name', $fileName)->get();
@@ -401,6 +416,9 @@ class RequestController extends CommonController
         }
     }
 
+    /**
+     * Approval Request
+     */
     public function approvalRequest()
     {
 
@@ -418,23 +436,32 @@ class RequestController extends CommonController
         return view('requestApprove', $contentData);
     }
 
+    /**
+     * Request Extend
+     * @param Request
+     */
     public function requestExtendSet(Request $request){
         try{
             $ma_yeu_cau = $request->input('ma_yeu_cau');
             $gia_han = $request->input('gia_han');
-            $extReq = MdRequestManage::find($ma_yeu_cau);
+            $extReq = MdRequestManage::with('user', 'xu_ly', 'phong_ban')->find($ma_yeu_cau);
+            $reqUser = User::where('username', $extReq->user_yeu_cau)->get();
+            $handleUser = User::where('username', $extReq->nguoi_xu_ly)->get();
             if ( $gia_han == 2 ){
                 $extReq->gia_han = $gia_han;
                 $extReq->han_xu_ly = $extReq->ngay_gia_han;
+                $extReq->save();
+
+                Notification::send($reqUser, new ExtendDateInform($this->emailData($extReq)));
             } else if ($gia_han == 3){
                 $extReq->gia_han = $gia_han;
+                $extReq->save();
             }
-
-            $extReq->save();
+            Notification::send($handleUser, new ExtendDateConfirm($this->emailData($extReq)));
 
             return response(['info' => 'Success', 'Content' => 'Cập nhật thành công.'], 200)->header('Content-Type', 'application/json');
         } catch (\Exception $e) {
-            return response(['info' => 'Success', 'Content' => 'Cập nhật thất bại.'], 200)->header('Content-Type', 'application/json');
+            return response(['info' => 'Success', 'Content' => 'Cập nhật thất bại.'], 401)->header('Content-Type', 'application/json');
         }
     }
 }

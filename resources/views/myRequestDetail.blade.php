@@ -109,6 +109,26 @@
                                         <p id="loai_yeu_cau" name="loai_yeu_cau" class="content-label">{{ $val->loai_yc->ten_loai_yeu_cau }}</p>
                                     </div>
                                 </div>
+                                @if ($val->gia_han > 0)
+                                <div class="form-group">
+                                    <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Gia hạn tới</b></label>
+                                    <div class="col-xs-7 col-sm-9 col-md-3 col-sm-mb-1 controls">
+                                    <div class="input-group date col-sm-5 col-md-12" id="ngay_gia_han_div">
+                                            <input id="ngay_gia_han" name="ngay_gia_han" type="text" class="form-control"
+                                                data-date-format="dd/mm/yyyy" value="{{ date_format(date_create($val->ngay_gia_han), 'd/m/Y') }}" disabled="disabled">
+                                            <div class="input-group-addon">
+                                                <span class="glyphicon glyphicon-th"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="div_gh_noi_dung" class="form-group" style="display: none;">
+                                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Thông tin gia hạn</b></label>
+                                    <div class="col-xs-12 col-sm-9 col-md-10 controls">
+                                        <div>{{ $val->noi_dung_gia_han }}</div>
+                                    </div>
+                                </div>
+                                @endif
                                 <div class="form-group">
                                     <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>File đính kèm</b></label>
                                     <div class="col-xs-12 col-sm-9 col-md-8 controls">

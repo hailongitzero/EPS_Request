@@ -840,7 +840,6 @@ $(function () {
             },
             error: function (response) {
                 alert('Cập nhật thất bại, vui lòng thử lại.');
-                window.location.href = window.location.origin + "/request-manage";
             }
         });
         return false;

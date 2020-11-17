@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Lang;
 
-class requestExtendDate extends Notification implements ShouldQueue
+class ExtendDateInform extends Notification implements ShouldQueue
 {
     use Queueable;
     public $tries = 3; // Max tries
@@ -44,19 +44,15 @@ class requestExtendDate extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(Lang::getFromJson('Thông báo yêu cầu gia hạn xử lý.'))
-            ->action(Lang::getFromJson('Chi tiết'), url(config('app.url') . '/request-update/' . $this->data['ma_yeu_cau']))
-            ->line(Lang::getFromJson('Người tạo: '))
-            ->line(Lang::getFromJson($this->data['nguoi_gui']))
-            ->line(Lang::getFromJson('Phòng ban: '))
-            ->line(Lang::getFromJson($this->data['phong_ban']))
-            ->line(Lang::getFromJson('Người chuyển xử lý: '))
-            ->line(Lang::getFromJson($this->data['nguoi_xu_ly']))
-            ->line(Lang::getFromJson('Ngày gửi: '))
-            ->line(Lang::getFromJson($this->data['ngay_tao']))
-            ->line(Lang::getFromJson('Ngày gia hạn xử lý: '))
-            ->line(date('d/m/Y h:i:s'))
-            ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai'], 'trang_thai' => $this->data['trang_thai'], 'tieu_de' => $this->data['tieu_de']]);
+        ->subject(Lang::getFromJson('Thông báo yêu cầu gia hạn xử lý.'))
+        ->action(Lang::getFromJson('Chi tiết'), url(config('app.url') . '/request-detail/' . $this->data['ma_yeu_cau']))
+        ->line(Lang::getFromJson('Người xử lý: '))
+        ->line(Lang::getFromJson($this->data['nguoi_xu_ly']))
+        ->line(Lang::getFromJson('Gia hạn đến: '))
+        ->line(Lang::getFromJson($this->data['ngay_gia_han']))
+        ->line(Lang::getFromJson('Ngày gia hạn xử lý: '))
+        ->line(date('d/m/Y h:i:s'))
+        ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai'], 'trang_thai' => $this->data['trang_thai'], 'tieu_de' => $this->data['tieu_de']]);
     }
 
     /**

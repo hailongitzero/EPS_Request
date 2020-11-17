@@ -131,8 +131,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>File đính kèm</b></label>
-                                    <div class="col-xs-12 col-sm-9 col-md-10 controls">
+                                    <label class="col-sm-3 col-lg-2 control-label"><b>File đính kèm</b></label>
+                                    <div class="col-sm-9 col-lg-10 controls">
                                         <div class="attach-file"></div>
                                     </div>
                                 </div>
