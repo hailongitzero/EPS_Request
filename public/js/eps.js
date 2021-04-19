@@ -1019,6 +1019,20 @@ $(function () {
         var ngay_gia_han = $('#ngay_gia_han').val();
         var noi_dung_gia_han = CKEDITOR.instances['noi_dung_gia_han'].getData();
 
+        if (trang_thai == 4 || trang_thai == YEU_CAU_MOI || trang_thai == YEU_CAU_MOI) {
+            if (thong_tin_xu_ly == "" || thong_tin_xu_ly == null) {
+                alert("Yêu cầu nhập lý do từ chối.");
+                $('#updateHandleRequest').attr('disabled', false);
+                return false;
+            }
+        }
+
+        if ( gia_han == 1 && ngay_gia_han == "") {
+            alert("Vui lòng chọn ngày gia hạn.");
+            $('#updateHandleRequest').attr('disabled', false);
+            return false;
+        }
+
         var data = new FormData($('#form-request')[0]);
         data.append('_token', $('meta[name="csrf-token"]').attr('content'));
         data.append('header', $('meta[name="csrf-token"]').attr('content'));
@@ -1028,14 +1042,6 @@ $(function () {
         data.append('gia_han', gia_han);
         data.append('ngay_gia_han', ngay_gia_han);
         data.append('noi_dung_gia_han', noi_dung_gia_han);
-
-        if (trang_thai == 4 || trang_thai == YEU_CAU_MOI || trang_thai == YEU_CAU_MOI) {
-            if (thong_tin_xu_ly == "" || thong_tin_xu_ly == null) {
-                alert("Yêu cầu nhập lý do từ chối.");
-                $('#updateHandleRequest').attr('disabled', false);
-                return false;
-            }
-        }
 
         $.ajax({
             type: 'POST',

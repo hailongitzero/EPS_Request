@@ -300,7 +300,7 @@ class HomeController extends CommonController
      *
      * @return json array
      */
-    public function getRequestAnalysisByWeek(Request $request)
+    public function getRequestAnalysisByMonth(Request $request)
     {
         $status1 = DB::select(DB::raw("select date_format(ngay_tao,'%d') as 'ngay' ,count(trang_thai) as 'cnt' from eps_request_mgmt where date_format(ngay_tao,'%Y%m') = date_format(curdate(),'%Y%m') and trang_thai = 0 group by  date_format(ngay_tao,'%d')"));
         $status2 = DB::select(DB::raw("select date_format(ngay_tao,'%d') as 'ngay' ,count(trang_thai) as 'cnt' from eps_request_mgmt where date_format(ngay_tao,'%Y%m') = date_format(curdate(),'%Y%m') and trang_thai = 1 group by  date_format(ngay_tao,'%d')"));
