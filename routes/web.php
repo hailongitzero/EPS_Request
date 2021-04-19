@@ -60,8 +60,8 @@ Route::middleware(['middleware' => 'auth'])->group(function () {
     Route::get('/my-request', 'RequestController@myRequest');
     Route::get('/request-detail/{id}', 'RequestController@myRequestDetail');
 
-    Route::get('/get-request-data-by-month', 'HomeController@getRequestAnalysisByWeek');
-    Route::post('/get-request-data-by-month', 'HomeController@getRequestAnalysisByWeek');
+    Route::get('/get-request-data-by-month', 'HomeController@getRequestAnalysisByMonth');
+    Route::post('/get-request-data-by-month', 'HomeController@getRequestAnalysisByMonth');
 
     Route::get('/get-total-req-by-dept-and-date', 'HomeController@getTotalRequestByDepartmentAndDate');
     Route::post('/get-total-req-by-dept-and-date', 'HomeController@getTotalRequestByDepartmentAndDate');
