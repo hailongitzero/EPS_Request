@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\MdFileUpload;
 use App\MdLoaiYeuCau;
 use App\MdPhongBan;
+use App\MdReqSubPerson;
 use App\Notifications\requestAssignHandle;
 use App\Notifications\requestAssignInform;
 use App\Notifications\requestRejectHandle;
@@ -124,9 +125,15 @@ class RequestController extends CommonController
         $ma_yeu_cau = $request->ma_yeu_cau;
         $yeuCau = '';
         if (isset($ma_yeu_cau)) {
-            $yeuCau = MdRequestManage::with(['phong_ban', 'user', 'xu_ly', 'files', 'loai_yc'])->find($ma_yeu_cau);
+            $yeuCau = MdRequestManage::with(['phong_ban', 'user', 'xu_ly', 'files', 'loai_yc', 'sub_assign.user'])->find($ma_yeu_cau);
             $mailList = explode(",", $yeuCau->cc_email);
             $yeuCau->ccMail = User::whereIn('email', $mailList)->get();
+            if (Auth::user()->username == $yeuCau->nguoi_xu_ly) {
+                $yeuCau->mainPerson = true;
+            } else {
+                $yeuCau->mainPerson = false;
+            }
+            
         }
 
         return response($yeuCau->toJson(), 200)->header('Content-Type', 'application/json');
@@ -201,18 +208,26 @@ class RequestController extends CommonController
                     $updateReq->loai_yeu_cau = $loai_yeu_cau;
                     $updateReq->yeu_cau_xu_ly = $yeu_cau_xu_ly;
                     $updateReq->save();
+
+                    foreach($request->all() as $key => $val){
+                        if ( substr($key, 0, -1) == "nguoi_xu_ly_" ){
+                            MdReqSubPerson::create(['ma_yeu_cau'=>$ma_yeu_cau, 'username'=>$val]);
+                        }
+                    }
                 }
                 if ($request->hasFile('attachFile')) {
                     $this->storageFile($request, $ma_yeu_cau);
                 }
-                $yeuCau = MdRequestManage::with('user', 'xu_ly', 'phong_ban')->find($ma_yeu_cau);
+                $yeuCau = MdRequestManage::with('user', 'xu_ly', 'phong_ban', 'sub_assign')->find($ma_yeu_cau);
 
                 $data = $this->emailData($yeuCau);
                 if ($newStatus == self::YEU_CAU_MOI || $newStatus == self::TIEP_NHAN || $newStatus == self::DANG_XU_LY) {
                     //mail to assign person
-                    $assignUserData = User::where('username', $nguoi_xu_ly)->get();
+                    $assignUserData = User::where('username', $nguoi_xu_ly)->orWhere('username')->get();
                     Notification::send($assignUserData, new requestAssignHandle($data));
-
+                    //mail to sub assign person
+                    $subAssignUser = $yeuCau->sub_assign;
+                    Notification::send($subAssignUser, new requestAssignHandle($data));
                     //mail to requester
                     $reqUser = User::where('username', $updateReq->user_yeu_cau)->get();
                     Notification::send($reqUser, new requestAssignInform($data));
@@ -239,8 +254,14 @@ class RequestController extends CommonController
 
         $userID = Auth::user()->username;
 
-        $dsRequest = MdRequestManage::with(['phong_ban', 'user'])->where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1, 2])->orderBy('trang_thai', 'desc')->orderBy('han_xu_ly', 'asc')->get();
-
+        $dsRequest = MdRequestManage::with(['phong_ban', 'user'])
+            ->whereIn('trang_thai', [1, 2])    
+            ->where('nguoi_xu_ly', $userID)
+            ->orWhereHas('sub_assign', function($query) use ($userID){
+                $query->where('username', $userID);
+            })
+            ->orderBy('trang_thai', 'desc')
+            ->orderBy('han_xu_ly', 'asc')->get();
         $dsRequest = $this->addCheckHandleDateClass($dsRequest);
 
         $contentData = array(
@@ -282,12 +303,15 @@ class RequestController extends CommonController
     public function requestUpdate($ma_yeu_cau)
     {
         $userID = Auth::user()->username;
-        $chkReqAuth = MdRequestManage::where('nguoi_xu_ly', $userID)->where('ma_yeu_cau', $ma_yeu_cau)->count();
+        $chkReqAuth = MdRequestManage::where('nguoi_xu_ly', $userID)->orWhereHas('sub_assign', function($query) use ($userID){
+            $query->where('username', $userID);
+        })->where('ma_yeu_cau', $ma_yeu_cau)->count();
+
         if ($chkReqAuth == 0) {
             return redirect('request-handle')->with('alert', 'Bạn không được phân quyền xử lý yêu cầu này.');
         }
 
-        $request = MdRequestManage::with(['phong_ban', 'user'])->where('ma_yeu_cau', $ma_yeu_cau)->orderBy('ngay_tao', 'desc')->get();
+        $request = MdRequestManage::with(['phong_ban', 'user', 'xu_ly', 'files', 'loai_yc', 'sub_assign.user'])->where('ma_yeu_cau', $ma_yeu_cau)->orderBy('ngay_tao', 'desc')->get();
 
         foreach ($request as $key => $val) {
             if ($val->trang_thai == self::HOAN_THANH || $val->trang_thai == self::TU_CHOI) {
@@ -320,13 +344,16 @@ class RequestController extends CommonController
 
         $oldStatus = $updateReq->trang_thai;
 
+        if ( $updateReq->nguoi_xu_ly != Auth::user()->username) {
+            return response(['info' => 'Fail', 'Content' => 'Bạn không phải là người xử lý yêu cầu.'], 200)->header('Content-Type', 'application/json');
+        }
         if ($oldStatus == self::HOAN_THANH || $oldStatus == self::TU_CHOI) {
             return response(['info' => 'Fail', 'Content' => 'Yêu cầu đã được xử lý, không thể cập nhật.'], 200)->header('Content-Type', 'application/json');
         } else {
             try {
                 if ($updateReq->gia_han == 0 && $request->gia_han == 1) {
+                    //yêu cầu gia hạn thời gian xử lý
                     $ngay_gia_han = $this->converDate($request->input('ngay_gia_han'), 'Y-m-d');
-
                     $updateReq->gia_han = 1;
                     $updateReq->ngay_gia_han = $ngay_gia_han;
                     $updateReq->noi_dung_gia_han = $request->input('noi_dung_gia_han');
@@ -336,6 +363,7 @@ class RequestController extends CommonController
                     Notification::send($managerUser, new requestExtendDate($this->emailData($updateReq)));
 
                 } else if ($newStatus == self::HOAN_THANH || $newStatus == self::TU_CHOI) {
+                    // xử lý yêu cầu
                     $updateReq->ngay_xu_ly = Carbon::now();
                     $updateReq->nguoi_xu_ly = Auth::user()->username;
                     $updateReq->thong_tin_xu_ly = $thong_tin_xu_ly;
@@ -350,6 +378,7 @@ class RequestController extends CommonController
                         Notification::send($managerUser, new requestComplete($this->emailData($updateReq)));
                     }
                 } else if ($newStatus == self::YEU_CAU_MOI){
+                    //yêu cầu chuyển người xử lý
                     $updateReq->thong_tin_xu_ly = $thong_tin_xu_ly;
                     $updateReq->trang_thai = $newStatus;
                     if ($request->hasFile('attachFile')) {

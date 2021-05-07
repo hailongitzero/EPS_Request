@@ -145,9 +145,13 @@ class CommonController extends Controller
 
         $totalNewRequest = MdRequestManage::whereIn('trang_thai', [0])->count();
         $pendingRequest = MdRequestManage::whereIn('trang_thai', [1, 2])->count();
-        $totalAssignRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [1, 2])->count();
+        $totalAssignRequest = MdRequestManage::whereIn('trang_thai', [1, 2])->where('nguoi_xu_ly', $userID)->orWhereHas('sub_assign', function($query) use ($userID){
+            $query->where('username', $userID);
+        })->count();
         $totalMyRequest = MdRequestManage::where('user_yeu_cau', $userID)->count();
-        $totalMyCompleteRequest = MdRequestManage::where('nguoi_xu_ly', $userID)->whereIn('trang_thai', [3, 4])->count();
+        $totalMyCompleteRequest = MdRequestManage::whereIn('trang_thai', [3, 4])->where('nguoi_xu_ly', $userID)->orWhereHas('sub_assign', function($query) use ($userID){
+            $query->where('username', $userID);
+        })->count();
         $totalCompleteRequest = MdRequestManage::whereIn('trang_thai', [3, 4])->count();
 
         $data = array(

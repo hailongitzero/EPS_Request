@@ -29,4 +29,8 @@ class MdRequestManage extends Model
     public function loai_yc(){
         return $this->belongsTo('App\MdLoaiYeuCau', 'loai_yeu_cau', 'loai_yeu_cau');
     }
+
+    public function sub_assign(){
+        return $this->hasMany('App\MdReqSubPerson', 'ma_yeu_cau');
+    }
 }

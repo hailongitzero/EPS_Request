@@ -123,7 +123,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Người xử lý</b></label>
-                                    <div class="col-xs-7 col-sm-9 col-md-3 col-sm-mb-1  controls">
+                                    <div class="col-xs-8 col-sm-9 col-md-3 col-sm-mb-1  controls">
                                         <div class="input-group col-xs-12 col-sm-5 col-md-12">
                                             <select id="nguoi_xu_ly" name="nguoi_xu_ly" class="form-control chosen" tabindex="1"data-placeholder="Chọn người xử lý...">
                                             @if(isset($assignedPerson))
@@ -135,7 +135,7 @@
                                         </div>
                                     </div>
                                     <label class="col-xs-4 col-sm-3 col-md-2 col-md-push-1 control-label"><b>Hạn xử lý</b></label>
-                                    <div class="col-xs-7 col-sm-9 col-md-3 col-md-push-1 controls">
+                                    <div class="col-xs-8 col-sm-9 col-md-3 col-md-push-1 controls">
                                         <div class="input-group date col-sm-5 col-md-12" id="han_xu_ly_yc">
                                             <input id="han_xu_ly" name="han_xu_ly" type="text" class="form-control" data-date-format="dd/mm/yyyy">
                                             <div class="input-group-addon">
@@ -145,8 +145,17 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b></b></label>
+                                    <div class="col-xs-8 col-sm-9 col-md-3 col-sm-mb-1  controls">
+                                        <div class="input-group col-xs-12 col-sm-5 col-md-12" id="sub_person">
+                                            
+                                        </div>
+                                        <a id="add_sub_person" href="#">Thêm người xử lý</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Trạng Thái</b></label>
-                                    <div class="col-xs-7 col-sm-9 col-md-3 col-sm-mb-1 controls">
+                                    <div class="col-xs-8 col-sm-9 col-md-3 col-sm-mb-1 controls">
                                         <div class="input-group col-xs-12 col-sm-5 col-md-12">
                                             <select id="trang_thai" name="trang_thai" class="form-control" tabindex="1">
                                                 <option value="0">Yêu cầu mới</option>
@@ -158,7 +167,7 @@
                                         </div>
                                     </div>
                                     <label class="col-xs-4 col-sm-3 col-md-2 col-md-push-1 control-label"><b>Loại yêu cầu</b></label>
-                                    <div class="col-xs-7 col-sm-9 col-md-3 col-md-push-1 controls">
+                                    <div class="col-xs-8 col-sm-9 col-md-3 col-md-push-1 controls">
                                         <div class="input-group col-xs-12 col-sm-5 col-md-12">
                                             <select id="loai_yeu_cau" name="loai_yeu_cau" class="form-control" tabindex="1">
                                                 @if(isset($loai_yc))

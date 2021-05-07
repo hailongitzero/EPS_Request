@@ -688,7 +688,17 @@ $(function () {
                 $('#yeu_cau_xu_ly').html(response['yeu_cau_xu_ly']);
                 $('#ngay_xu_ly').text(response['ngay_xu_ly']);
                 if (response['xu_ly'] != null) {
-                    $('p#nguoi_xu_ly').text(response['xu_ly']['name']);
+                    $('p#nguoi_xu_ly').text(response['xu_ly']['name'] + ' <chính>');
+                }
+
+                if ($('#subPerson').length) {
+                    var data = '';
+                    if (response['sub_assign'].length != null && response['sub_assign'].length != undefined) {
+                        response['sub_assign'].forEach(function (subPrs, index) {
+                            data += subPrs['user']['name'] + ' <phụ>, ';
+                        });
+                    }
+                    $('#subPerson').text(data);
                 }
 
                 if (response['trang_thai'] == YEU_CAU_MOI && response['thong_tin_xu_ly'] != null) {
@@ -713,8 +723,7 @@ $(function () {
                     $('#ngay_tao_yc').datepicker('setDate', date);
                 }
 
-                $('#nguoi_xu_ly').val(response['nguoi_xu_ly']).trigger("chosen:updated");;
-
+                $('#nguoi_xu_ly').val(response['nguoi_xu_ly']).trigger("chosen:updated");
 
                 $('#trang_thai').val(response['trang_thai']);
                 if ($('p#trang_thai').length > 0) {
@@ -796,6 +805,7 @@ $(function () {
         $('#nguoi_xu_ly p').text("");
         $('#trang_thai option').removeAttr('selected');
         $('.attach-file').empty();
+        $('#sub_person').empty();
     });
 
     $('#updateRequest').on('click', function () {
@@ -925,8 +935,20 @@ $(function () {
                     $('#ccMaiList').html(data);
                 }
 
+
                 $('#yeu_cau_xu_ly').html(response['yeu_cau_xu_ly']);
-                $('#nguoi_xu_ly').text(response['xu_ly']['name'])
+                $('#nguoi_xu_ly').text(response['xu_ly']['name'] + ' <chính>')
+
+                if ($('#subPerson').length) {
+                    var data = '';
+                    if (response['sub_assign'].length != null && response['sub_assign'].length != undefined) {
+                        response['sub_assign'].forEach(function (subPrs, index) {
+                            data += subPrs['user']['name'] + ' <phụ>, ';
+                        });
+                    }
+                    $('#subPerson').text(data);
+                }
+
                 CKEDITOR.instances['thong_tin_xu_ly'].setData(response['thong_tin_xu_ly']);
 
                 $('#loai_yeu_cau').val(response['loai_yeu_cau']);
@@ -979,6 +1001,13 @@ $(function () {
                     $('#ngay_gia_han').datepicker('setDate', new Date(response['ngay_gia_han']));
                     $('#ngay_gia_han').attr('disabled', 'disabled');
                     CKEDITOR.instances['noi_dung_gia_han'].setData(response['noi_dung_gia_han']);
+                }
+
+                if (!response['mainPerson']) {
+                    $('#gia_han').attr('disabled', 'disabled');
+                    $('#ngay_gia_han').attr('disabled', 'disabled');
+                    $('#trang_thai').attr('disabled', 'disabled');
+                    $('#updateHandleRequest').attr('disabled', 'disabled');
                 }
             },
             error: function (response) {
@@ -1569,4 +1598,10 @@ $(function () {
             id: 'manual_document',
         });
     }
+
+    $('#add_sub_person').on('click', function(){
+        var idSeq = $('#sub_person').find('select').length +1 ;
+        $( "#nguoi_xu_ly" ).clone().prop({'id': 'nguoi_xu_ly_' + idSeq, 'name': 'nguoi_xu_ly_' + idSeq }).prependTo( "#sub_person" );
+        $('#nguoi_xu_ly_' + idSeq).chosen({width: "100%", 'margin-bottom': "10px !important"});
+    });
 });

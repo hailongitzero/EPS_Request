@@ -137,6 +137,7 @@
                                     <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Người xử lý</b></label>
                                     <div class="col-xs-8 col-sm-9 col-md-4 controls">
                                         <p id="nguoi_xu_ly" class="content-label"></p>
+                                        <p id="subPerson" class="content-label"></p>
                                     </div>
                                     <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Trạng thái</b></label>
                                     <div class="col-xs-8 col-sm-9 col-md-4 controls">

@@ -78,7 +78,20 @@
                                     </div>
                                     <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Ưu Tiên</b></label>
                                     <div class="col-xs-8 col-sm-9 col-md-3 controls">
-                                        <p id="do_uu_tien" class="content-label"><span class="label label-large {{ $val->do_uu_tien == 0 ? "label-info" : ($val->do_uu_tien == 1 ? "label-success" : "label-important") }}"> {{ $val->do_uu_tien == 0 ? "Thấp" : ($val->do_uu_tien == 1 ? "Trung Bình" : "Cao") }}</span></p>
+                                        <p id="do_uu_tien" class="content-label">
+                                        <span class="label label-large {{ $val->do_uu_tien == 0 ? 'label-info' : ($val->do_uu_tien == 1 ? 'label-success' : 'label-important') }}"> {{ $val->do_uu_tien == 0 ? "Thấp" : ($val->do_uu_tien == 1 ? "Trung Bình" : "Cao") }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Người xử lý</b></label>
+                                    <div class="col-xs-12 col-sm-9 col-md-8 controls">
+                                        <p id="nguoi_xu_ly" class="content-label">{!! $val->xu_ly->name !!} &lt;chính&gt;</p>
+                                        <p id="sub_person" class="content-label">
+                                            @foreach( $val->sub_assign as $asg)
+                                                {{$asg->user->name}} &lt;phụ&gt;,
+                                            @endforeach
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -115,6 +128,31 @@
                                                 <span class="glyphicon glyphicon-th"></span>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Gia hạn</b></label>
+                                    <div class="col-xs-7 col-sm-9 col-md-3 col-lg-2 col-sm-mb-1 controls">
+                                        <div class="input-group col-xs-12 col-sm-5 col-md-12">
+                                            <div id="gia_han_yn" class="make-switch has-switch" data-label-icon="" data-on-label="<i class='fa fa-check fa fa-white'></i>" data-off-label="<i class='fa fa-times'></i>">
+                                                <input id="gia_han" name="gia_han" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label class="col-xs-4 col-sm-3 col-md-2 control-label"><b>Gia hạn tới</b></label>
+                                    <div class="col-xs-7 col-sm-9 col-md-3 col-lg-2 col-sm-mb-1 controls">
+                                        <div class="input-group date col-sm-5 col-md-12" id="ngay_gia_han_div">
+                                            <input id="ngay_gia_han" name="ngay_gia_han" type="text" class="form-control" data-date-format="dd/mm/yyyy">
+                                            <div class="input-group-addon">
+                                                <span class="glyphicon glyphicon-th"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="div_gh_noi_dung" class="form-group" style="display: none;">
+                                    <label class="col-xs-12 col-sm-3 col-md-2 control-label"><b>Thông tin gia hạn</b></label>
+                                    <div class="col-xs-12 col-sm-9 col-md-8 controls">
+                                        <textarea id="noi_dung_gia_han" name="noi_dung_gia_han" class="form-control ckeditor" rows="4"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
