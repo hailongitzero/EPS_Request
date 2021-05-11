@@ -129,7 +129,9 @@
                                     @foreach( $userPb as $key=>$val)
                                         <optgroup label="{{ $val->ten_phong_ban }}">
                                             @foreach( $val->user as $cKey=>$cVal)
+                                                @if ($cVal->role == 0)
                                                 <option value="{{ $cVal->email }}">{{ $cVal->name . ' < '. $cVal->email . ' >' }}</option>
+                                                @endif
                                             @endforeach
                                         </optgroup>
                                     @endforeach

@@ -992,6 +992,7 @@ $(function () {
                     $('#trang_thai').removeAttr('disabled');
                 }
 
+                console.log(response['gia_han']);
                 if (response['gia_han'] == 0) {
                     $('#gia_han_yn').bootstrapSwitch('setState', false);
                     $('#gia_han').removeAttr('disabled');
@@ -1601,7 +1602,14 @@ $(function () {
 
     $('#add_sub_person').on('click', function(){
         var idSeq = $('#sub_person').find('select').length +1 ;
-        $( "#nguoi_xu_ly" ).clone().prop({'id': 'nguoi_xu_ly_' + idSeq, 'name': 'nguoi_xu_ly_' + idSeq }).prependTo( "#sub_person" );
+        $( "#nguoi_xu_ly" ).clone().prop({'id': 'nguoi_xu_ly_' + idSeq, 'name': 'nguoi_xu_ly_' + idSeq }).appendTo( "#sub_person" );
         $('#nguoi_xu_ly_' + idSeq).chosen({width: "100%", 'margin-bottom': "10px !important"});
+    });
+    $('#remove_sub_person').on('click', function(){
+        if ($('#sub_person').find('select').last().length) {
+            var lastSelectId = $('#sub_person').find('select').attr('id');
+            $('#'+lastSelectId).remove();
+            $('#'+lastSelectId+'_chosen').remove();
+        }
     });
 });

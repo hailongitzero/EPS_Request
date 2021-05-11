@@ -150,7 +150,8 @@
                                         <div class="input-group col-xs-12 col-sm-5 col-md-12" id="sub_person">
                                             
                                         </div>
-                                        <a id="add_sub_person" href="#">Thêm người xử lý</a>
+                                        <a id="add_sub_person" href="#">Thêm người xử lý</a>&emsp;
+                                        <a id="remove_sub_person" href="#">Xóa</a>
                                     </div>
                                 </div>
                                 <div class="form-group">

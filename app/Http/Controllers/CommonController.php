@@ -176,6 +176,7 @@ class CommonController extends Controller
 
         $data = array(
             'ma_yeu_cau'    => $requestInfo->ma_yeu_cau,
+            'cc_email'      => $requestInfo->cc_email != null || $requestInfo->cc_email != "" ? explode(',', $requestInfo->cc_email) : "",
             'tieu_de'       => $requestInfo->tieu_de,
             'noi_dung'      => $requestInfo->noi_dung,
             'nguoi_gui'     => $requestInfo->user['name'],

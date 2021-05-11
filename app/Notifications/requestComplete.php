@@ -53,6 +53,7 @@ class requestComplete extends Notification implements ShouldQueue
             ->line(Lang::getFromJson($this->data['nguoi_xu_ly']))
             ->line(Lang::getFromJson('Thông tin XL'))
             ->line(Lang::getFromJson($this->data['thong_tin_xu_ly']))
+            ->cc($this->data['cc_email'])
             ->markdown('vendor.notifications.emailRequest', ['ma_trang_thai' => $this->data['ma_trang_thai'], 'trang_thai' => $this->data['trang_thai'], 'tieu_de' => $this->data['tieu_de']]);
     }
 
